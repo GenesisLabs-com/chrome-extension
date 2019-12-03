@@ -36,8 +36,8 @@ export default function Index(props) {
       {usersExist.length !== 0 ? (
         <SeeExistingAccounts logo={props.logo} />
       ) : (
-        <Home logo={props.logo} />
-      )}
+          <Home logo={props.logo} />
+        )}
     </div>
   );
 }

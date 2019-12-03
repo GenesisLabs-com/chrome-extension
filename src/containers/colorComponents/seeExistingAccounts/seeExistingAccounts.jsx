@@ -93,7 +93,7 @@ export default function SeeExistingAccounts() {
                           <div className="address" id="TooltipExample">
                             <CopyToClipboard
                               text={account.address}
-                              // onCopy={() => setCopied()}
+                            // onCopy={() => setCopied()}
                             >
                               <span>
                                 {account.address.substr(0, 6) +
@@ -108,7 +108,7 @@ export default function SeeExistingAccounts() {
                         </div>
                       </div>
                       <a
-                        href="https://wallet.testnet.color-platform.org/#/extension"
+                        href="https://localhost:9080/#/extension"
                         target="_blank"
                         rel="noopener noreferrer"
                       >

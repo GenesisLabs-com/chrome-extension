@@ -3,60 +3,8 @@ import '../../assets/img/icon-128.png';
 
 import { storeWallet } from '@rnssolution/color-keys';
 
-// console.log('This is the background page.');
-// console.log('Put the background scripts here.');
-
-// chrome.runtime.onConnect.addListener(function(port) {
-//   console.log('portt in background', port);
-//   console.assert(port.name == 'knockknock');
-//   port.onMessage.addListener(function(msg) {
-//     console.log(msg, 'message in port');
-//     if (msg.joke == 'Knock knock')
-//       port.postMessage({ question: "Who's there?" });
-//     else if (msg.answer == 'Madame')
-//       port.postMessage({ question: 'Madame who?' });
-//     else if (msg.answer == 'Madame... Bovary')
-//       port.postMessage({ question: "I don't get it." });
-//   });
-// });
-
-window.addEventListener('message', function(event) {
-  console.log('message listened');
-  console.log(event);
-  // We only accept messages from ourselves
-  if (event.source != window) return;
-
-  if (event.type && event.type == 'FROM_PAGE') {
-    console.log('if working');
-    console.log('Content script received message: ' + event.data.text);
-  }
-});
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  console.log(message, 'message');
-  console.log(sender, 'sender');
-  console.log(sendResponse, 'sendresponse');
-  console.log('message received');
-  if (message === 'givemedata') {
-    console.log('in give me data', localStorage);
-    sendResponse({ status: localStorage });
-  }
-});
-
-// chrome.windows.create(
-//   {
-//     type: 'popup',
-//     url: 'http://localhost:3000/',
-//     type: 'popup',
-//   },
-//   function(newWindow) {}
-// );
-
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  // console.log(sender, 'senderrrr123');
-  // console.log(request, 'reererer');
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getStatus') {
-    // console.log(chrome.tabs);
     if (sender.url === 'http://localhost:3000/') {
       sendResponse({ status: localStorage });
     } else if (request.method == 'webmessage') {
@@ -65,12 +13,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       sendResponse({ status: 'No Data for you Bro' });
     }
   }
-  // else if (request.method == 'set_wallets') {
-  //   localStorage.setItem('wallets', request.data);
-  //   sendResponse({ status: localStorage['wallets'] });
-  // } else if (request.method === 'givemedata') {
-  //   sendResponse({ status: localStorage });
-  // }
   else if (request.method == 'setextensionaddress') {
     try {
       storeWallet(
@@ -84,7 +26,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
   } else if (request.method == 'getextensionaddress') {
     var values = allStorage();
-    sendResponse({ status: values[0] });
+    sendResponse({ values });
   } else sendResponse({}); // snub them.
 });
 

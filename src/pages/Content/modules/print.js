@@ -2,48 +2,61 @@ export const printLine = (line, arg2) => {
   console.log('===> FROM THE PRINT MODULE:', line, arg2);
 };
 
-export const getDatafromExtension = (data) => {
-  // console.log('data from extension', data);
-};
+// export const getDatafromExtension = (data) => {
+//   // console.log('data from extension', data);
+// };
 
-chrome.runtime.sendMessage({ method: 'getStatus' }, function(response) {
-  if (response.status === 'No Data for you Bro') {
-    // console.log(response.status);
-  } else {
-    // console.log(response.status, 'in content');
-    Object.keys(response.status).map((type, key) => {
-      localStorage.setItem(type, response.status[type]);
-      // console.log(response.status[type]);
-    });
-  }
-
-  // var url = window.location.toString();
-  // if (url === 'https://wallet.testnet.color-platform.rnssol.com/#/extension') {
-  //   // console.log(response.status, 'in content');
-  //   Object.keys(response.status).map((type, key) => {
-  //     localStorage.setItem(type, response.status[type]);
-  //     // console.log(response.status[type]);
-  //   });
-  // } else {
-  //   // console.log('this is not the wallet');
-  // }
-});
-
-// var port = chrome.runtime.connect({ name: 'knockknock' });
-// console.log(port, 'this is the port in print');
-// port.postMessage({ joke: 'Knock knock' });
-// port.onMessage.addListener(function(msg) {
-//   console.log(msg, 'msg in port');
-//   if (msg.question == "Who's there?") port.postMessage({ answer: 'Madame' });
-//   else if (msg.question == 'Madame who?')
-//     port.postMessage({ answer: 'Madame... Bovary' });
-// });
-
-document.addEventListener('hello', function(data) {
-  chrome.runtime.sendMessage('test');
-});
-document.addEventListener('newmess', function(data) {
-  chrome.runtime.sendMessage('givemedata', function(response) {
-    console.log(response);
+function getData() {
+  chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function (response) {
+    return JSON.stringify(response.values[0]);
   });
+}
+
+// function listenerFunc() {
+//   chrome.runtime.onMessage.addListener(
+//     function (request, sender, sendResponse) {
+//     //  console.log("ExtensionListener")
+//       // console.log(sender.tab ?
+//       //   "from a content script:" + sender.tab.url :
+//       //   "from the extension");
+//       if (request.greeting == "hello")
+//         sendResponse({ farewell: "goodbye" });
+//     });
+// }
+//chrome.runtime.onMessage.addListener(function (data, n, t) {
+
+//var r = formatting(data.type, data.payload); window.postMessage(r, "*")
+//})
+function INIT_EXTENSION() {
+  //var e = o("INIT_EXTENSION", { extension_enabled: !0 });
+  var e = { type: "FROM_LUNIE_EXTENSION", message: { type: 'INIT_EXTENSION', payload: 'extension_enabled:!0' } }
+  window.postMessage(e, "*")
+}
+
+window.addEventListener("message", function (e) {
+  // console.log("Message:::::", e.data)
+  if (e.source === window && e.data.type && "FROM_LUNIE_IO" === e.data.type && (e.data)) {
+    console.log("skipResponse", e.skipResponse)
+    INIT_EXTENSION()
+    //listenerFunc()
+    var dataextension;
+    chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function (response) {
+      dataextension = JSON.parse(JSON.stringify(response.values[0]));
+      // alert(dataextension)
+      var data = {
+        type: "FROM_LUNIE_EXTENSION",
+        message: {
+          type: "GET_WALLETS_RESPONSE",
+          payload: [
+            {
+              address: dataextension.address,
+              name: dataextension.name
+            }
+          ]
+        }
+      };
+      window.postMessage(data, "*")
+    });
+
+  }
 });
