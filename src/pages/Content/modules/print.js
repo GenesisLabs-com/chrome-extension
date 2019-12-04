@@ -41,20 +41,31 @@ window.addEventListener("message", function (e) {
     //listenerFunc()
     var dataextension;
     chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function (response) {
-      dataextension = JSON.parse(JSON.stringify(response.values[0]));
-      // alert(dataextension)
+      // dataextension = JSON.stringify(response.values)//JSON.parse(JSON.stringify(response.values[0]));
+      var dataextension = [];
+
+
+      if (response.values) {
+        response.values.map((type) => {
+          if (type.address && type.name)
+            dataextension.push({ "address": type.address, "name": type.name })
+        })
+
+        // if (obj && obj.name && obj.address) {
+        //   dataextension.push({ "address": obj.name, "name": obj.address });
+        // }
+      }
+
+      console.log("console", app)
       var data = {
         type: "FROM_LUNIE_EXTENSION",
         message: {
           type: "GET_WALLETS_RESPONSE",
-          payload: [
-            {
-              address: dataextension.address,
-              name: dataextension.name
-            }
-          ]
+          payload: dataextension
+
         }
       };
+      dataextension = []
       window.postMessage(data, "*")
     });
 
