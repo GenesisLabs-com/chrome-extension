@@ -75,8 +75,7 @@ window.addEventListener("message", function (e) {
   }
   else if (e.source === window && e.data.type && "FROM_LUNIE_IO" === e.data.type && (e.data) && e.data.payload && e.data.payload.type == "LUNIE_SIGN_REQUEST") {
     console.log("LUNIE_SIGN_REQUEST")
-    chrome.runtime.sendMessage({ method: 'LUNIE_SIGN_REQUEST' }, function (response) {
-      console.log("Response", response)
+    chrome.runtime.sendMessage({ method: 'LUNIE_SIGN_REQUEST', data: e.data }, function (response) {
       var data = [
         {
           payload: {
