@@ -1,3 +1,4 @@
+var temp = 0;
 export const printLine = (line, arg2) => {
   console.log('===> FROM THE PRINT MODULE:', line, arg2);
 };
@@ -34,10 +35,13 @@ function INIT_EXTENSION() {
 }
 
 window.addEventListener("message", function (e) {
-  // console.log("Message:::::", e.data)
-  if (e.source === window && e.data.type && "FROM_LUNIE_IO" === e.data.type && (e.data)) {
-    console.log("skipResponse", e.skipResponse)
+
+  //console.log("temp", temp % 5, temp)
+  if (temp == 0) {
+    temp = temp + 1
     INIT_EXTENSION()
+  }
+  if (e.source === window && e.data.type && "FROM_LUNIE_IO" === e.data.type && (e.data) && e.data.payload && e.data.payload.type == "GET_WALLETS") {
     //listenerFunc()
     var dataextension;
     chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function (response) {
@@ -56,7 +60,6 @@ window.addEventListener("message", function (e) {
         // }
       }
 
-      console.log("console", app)
       var data = {
         type: "FROM_LUNIE_EXTENSION",
         message: {
@@ -69,5 +72,26 @@ window.addEventListener("message", function (e) {
       window.postMessage(data, "*")
     });
 
+  }
+  else if (e.source === window && e.data.type && "FROM_LUNIE_IO" === e.data.type && (e.data) && e.data.payload && e.data.payload.type == "LUNIE_SIGN_REQUEST") {
+    console.log("LUNIE_SIGN_REQUEST")
+    chrome.runtime.sendMessage({ method: 'LUNIE_SIGN_REQUEST' }, function (response) {
+      console.log("Response", response)
+      var data = [
+        {
+          payload: {
+            payload: {
+              senderAddress: "cosmos1234",
+              signMessage: "abc"
+            },
+            type: "LUNIE_SIGN_REQUEST"
+          },
+          skipResponse: true,
+          type: "FROM_LUNIE_IO"
+        },
+        "*"
+      ]
+      //    window.postMessage(data, "*")
+    });
   }
 });

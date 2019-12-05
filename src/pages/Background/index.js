@@ -27,6 +27,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   } else if (request.method == 'getextensionaddress') {
     var values = allStorage();
     sendResponse({ values });
+  } else if (request.method == 'LUNIE_SIGN_REQUEST') {
+    console.log("LUNIE_SIGN_REQUEST_Saad")
+    //chrome.runtime.sendMessage('LUNIE_SIGN_REQUEST_Saad')
+    sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
   } else sendResponse({}); // snub them.
 });
 
