@@ -515,7 +515,6 @@ html,
 body,
 #app {
   /* background: var(--app-bg); */
-  background: var(--app-bg);
   font-size: var(--x);
   line-height: 1.5;
   font-family: var(--sans);
@@ -1447,7 +1446,7 @@ textarea.tm-field {
 }
 
 .session-approve {
-  background:white;
+  background: white;
   padding: 2rem;
   background: var(--fg);
   border-left: 1px solid var(--bc-dim);
