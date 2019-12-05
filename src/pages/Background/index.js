@@ -2,7 +2,8 @@ import '../../assets/img/icon-34.png';
 import '../../assets/img/icon-128.png';
 
 import { storeWallet } from '@rnssolution/color-keys';
-
+import { Queue } from './queue';
+const q = new Queue();
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
@@ -53,3 +54,10 @@ function allStorage() {
 
   return values;
 }
+
+
+// q.add(1);
+// q.add(2);
+// q.add(3);
+// export var latestSignReq = q.size !== 0 ? q.first() : '';
+// console.log('backgrounD', latestSignReq);

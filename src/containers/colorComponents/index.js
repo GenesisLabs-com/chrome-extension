@@ -1,6 +1,10 @@
 import React from "react";
 import Home from "./home/home.jsx";
 import SeeExistingAccounts from "./seeExistingAccounts/seeExistingAccounts.jsx";
+import SignExtension from './signExtension/signExtension.jsx';
+
+
+import { latestSignReq } from '../../pages/Background/index'
 //import SignExtension from './signExtension/signExtension.jsx';
 export default function Index(props) {
   function allStorage() {
@@ -27,13 +31,17 @@ export default function Index(props) {
 
   // }, [])
   const usersExist = allStorage();
+  console.log(latestSignReq, 'popup')
   return (
     <div>
-      {usersExist.length !== 0 ? (
-        <SeeExistingAccounts logo={props.logo} />
-      ) : (
-          <Home logo={props.logo} />
-        )}
+      {
+        latestSignReq.length === 0 ? usersExist.length !== 0 ? (
+          <SeeExistingAccounts logo={props.logo} />
+        ) : (
+            <Home logo={props.logo} />
+          )
+          : <SignExtension />
+      }
     </div>
   );
 }

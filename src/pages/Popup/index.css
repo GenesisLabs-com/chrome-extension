@@ -1447,6 +1447,7 @@ textarea.tm-field {
 }
 
 .session-approve {
+  background:white;
   padding: 2rem;
   background: var(--fg);
   border-left: 1px solid var(--bc-dim);
