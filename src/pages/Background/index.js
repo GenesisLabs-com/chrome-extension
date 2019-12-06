@@ -34,7 +34,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log('LUNIE_SIGN_REQUEST_Saad', temp);
     q.add(temp);
     latestSignReq = q.first();
-    console.log('latestSignReq:', latestSignReq);
+    localStorage.setItem('latestSignReq', JSON.stringify(latestSignReq));
     // export var senderAddress = request.data.payload.payload.senderAddress;
     sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
   } else sendResponse({}); // snub them.
@@ -59,7 +59,3 @@ function allStorage() {
 
   return values;
 }
-
-const allVars = [latestSignReq];
-
-export default allVars;

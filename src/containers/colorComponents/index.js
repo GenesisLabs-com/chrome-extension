@@ -1,12 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Home from './home/home.jsx';
 import SeeExistingAccounts from './seeExistingAccounts/seeExistingAccounts.jsx';
 import SignExtension from './signExtension/signExtension.jsx';
-
-// import { latestSignReq, senderAddress } from '../../pages/Background/index';
-import allvars from '../../pages/Background/index';
-
-//import SignExtension from './signExtension/signExtension.jsx';
 export default function Index(props) {
   function allStorage() {
     var values = [],
@@ -28,12 +23,17 @@ export default function Index(props) {
     return values;
   }
 
-  // useEffect(() => {
-
-  // }, [])
+  const [latestSignReq, setLatest] = React.useState(undefined);
+  useEffect(() => {
+    let temp = localStorage.getItem('latestSignReq');
+    temp = JSON.parse(temp);
+    console.log(temp);
+    if (temp !== null) {
+      setLatest(temp);
+    }
+  }, []);
   const usersExist = allStorage();
-  const latestSignReq = undefined;
-  console.log(allvars);
+
   return (
     <React.Fragment>
       {latestSignReq === undefined ? (
@@ -45,7 +45,7 @@ export default function Index(props) {
       ) : (
         <SignExtension
           latestSignReq={latestSignReq}
-          senderAddress={senderAddress}
+          // senderAddress={senderAddress}
         />
       )}
     </React.Fragment>
