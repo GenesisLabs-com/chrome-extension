@@ -4,6 +4,7 @@ import '../../assets/img/icon-128.png';
 import { storeWallet } from '@rnssolution/color-keys';
 import { Queue } from './queue';
 const q = new Queue();
+var latestSignReq = 'latestsignreq';
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
@@ -28,9 +29,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     var values = allStorage();
     sendResponse({ values });
   } else if (request.method == 'LUNIE_SIGN_REQUEST') {
-    console.log('LUNIE_SIGN_REQUEST_Saad');
-    // q.add()
-    //chrome.runtime.sendMessage('LUNIE_SIGN_REQUEST_Saad')
+    let temp = request.data.payload.payload.signMessage;
+    temp = JSON.parse(temp);
+    console.log('LUNIE_SIGN_REQUEST_Saad', temp);
+    q.add(temp);
+    latestSignReq = q.first();
+    console.log('latestSignReq:', latestSignReq);
+    // export var senderAddress = request.data.payload.payload.senderAddress;
     sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
   } else sendResponse({}); // snub them.
 });
@@ -55,9 +60,6 @@ function allStorage() {
   return values;
 }
 
-// q.add(1);
-// q.add(2);
-// q.add(3);
-console.log('size', q.size());
-export var latestSignReq = q.size !== 0 ? q.first() : '';
-// console.log('backgrounD', latestSignReq);
+const allVars = [latestSignReq];
+
+export default allVars;

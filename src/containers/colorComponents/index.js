@@ -3,7 +3,9 @@ import Home from './home/home.jsx';
 import SeeExistingAccounts from './seeExistingAccounts/seeExistingAccounts.jsx';
 import SignExtension from './signExtension/signExtension.jsx';
 
-import { latestSignReq } from '../../pages/Background/index';
+// import { latestSignReq, senderAddress } from '../../pages/Background/index';
+import allvars from '../../pages/Background/index';
+
 //import SignExtension from './signExtension/signExtension.jsx';
 export default function Index(props) {
   function allStorage() {
@@ -30,7 +32,8 @@ export default function Index(props) {
 
   // }, [])
   const usersExist = allStorage();
-  console.log(latestSignReq);
+  const latestSignReq = undefined;
+  console.log(allvars);
   return (
     <React.Fragment>
       {latestSignReq === undefined ? (
@@ -40,7 +43,10 @@ export default function Index(props) {
           <Home logo={props.logo} />
         )
       ) : (
-        <SignExtension />
+        <SignExtension
+          latestSignReq={latestSignReq}
+          senderAddress={senderAddress}
+        />
       )}
     </React.Fragment>
   );

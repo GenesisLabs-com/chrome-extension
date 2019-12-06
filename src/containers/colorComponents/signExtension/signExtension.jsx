@@ -1,8 +1,11 @@
 import React from 'react';
 
 import color from '../../../assets/img/color.svg';
+import { latestSignReq, senderAddress } from '../../../pages/Background/index';
 
 export default function SignExtension(props) {
+  console.log(senderAddress);
+  console.log(latestSignReq);
   return (
     <div className="session-approve">
       <h2>Approve Transaction</h2>
@@ -49,7 +52,7 @@ export default function SignExtension(props) {
               <li>
                 <span>Subtotal</span>
                 <span> 0.100000 CLR </span>
-              </li>{' '}
+              </li>
               <li>
                 <span>Network Fee</span>
                 <span>0.000918 CLR</span>

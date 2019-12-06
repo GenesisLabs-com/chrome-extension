@@ -27,7 +27,6 @@ export default function Home() {
               alt="color platform"
               className="lunie-logo"
             />
-            <button onClick={() => sendMessage()}>Send</button>
             <div className="session-list">
               <Link
                 // href="#/create"
