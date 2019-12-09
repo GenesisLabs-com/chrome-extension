@@ -24,12 +24,17 @@ export default function Index(props) {
   }
 
   const [latestSignReq, setLatest] = React.useState(undefined);
+  const [senderAddress, setSender] = React.useState(undefined);
   useEffect(() => {
     let temp = localStorage.getItem('latestSignReq');
+    let tempS = localStorage.getItem('senderAddress');
+    console.log(tempS);
     temp = JSON.parse(temp);
-    console.log(temp);
     if (temp !== null) {
       setLatest(temp);
+    }
+    if (tempS !== null) {
+      setSender(tempS);
     }
   }, []);
   const usersExist = allStorage();
@@ -45,7 +50,7 @@ export default function Index(props) {
       ) : (
         <SignExtension
           latestSignReq={latestSignReq}
-          // senderAddress={senderAddress}
+          senderAddress={senderAddress}
         />
       )}
     </React.Fragment>

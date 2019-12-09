@@ -31,10 +31,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   } else if (request.method == 'LUNIE_SIGN_REQUEST') {
     let temp = request.data.payload.payload.signMessage;
     temp = JSON.parse(temp);
-    console.log('LUNIE_SIGN_REQUEST_Saad', temp);
     q.add(temp);
     latestSignReq = q.first();
+    console.log(request.data);
     localStorage.setItem('latestSignReq', JSON.stringify(latestSignReq));
+    localStorage.setItem(
+      'senderAddress',
+      JSON.stringify(request.data.payload.payload.senderAddress)
+    );
     // export var senderAddress = request.data.payload.payload.senderAddress;
     sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
   } else sendResponse({}); // snub them.
