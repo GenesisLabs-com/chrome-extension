@@ -28,39 +28,6 @@ export default function Home() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  ///Sign A transaction using Extension
-  function signWithExtension(address, password, signMessage) {
-    // e.preventDefault();
-    const wallet = getStoredWallet(address, password)
-    // return signMessage => {
-    const signature = signWithPrivateKey(
-      signMessage,
-      Buffer.from(wallet.privateKey, "hex")
-    )
-
-    //   return {
-    //     signature,
-    //     publicKey: Buffer.from(wallet.publicKey, "hex")
-    //   }
-    chrome.runtime.sendMessage(
-      {
-        method: 'LUNIE_SIGN_REQUEST_RESPONSE',
-        data: {
-          signature: signature,
-          publicKey: Buffer.from(wallet.publicKey, "hex")
-        },
-      },
-      function (response) {
-        console.log(response);
-        // if (response.status === 'failed') {
-        //   goTo(SeeExsistingAccounts);
-        // } else {
-        //   goTo(SeeExsistingAccounts);
-        // }
-      }
-    );
-  }
-
   function createNewAddress(e) {
     e.preventDefault();
     const wallet = getNewWalletFromSeed(mnemonic);
@@ -73,7 +40,7 @@ export default function Home() {
           password: values.password,
         },
       },
-      function (response) {
+      function(response) {
         console.log(response);
         if (response.status === 'failed') {
           goTo(SeeExsistingAccounts);

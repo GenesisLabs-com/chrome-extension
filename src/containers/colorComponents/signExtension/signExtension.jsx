@@ -1,20 +1,53 @@
 import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
+import { fullDecimals, viewDenom } from '../scripts/num';
+import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
 export default function SignExtension(props) {
-  console.log(props.latestSignReq);
-  console.log(props.latestSignReq.msgs[0].value.to_address);
-
   let subtotal = parseFloat(props.latestSignReq.msgs[0].value.amount[0].amount);
+  let networkfee = parseFloat(props.latestSignReq.fee.gas);
   subtotal = subtotal / 1000000;
+  networkfee = networkfee * 0.000000001;
+  let total = subtotal + networkfee;
   function reject() {
     console.log('reject');
   }
 
-  function approve() {
-    console.log('approve');
+  ///Sign A transaction using Extension
+  function signWithExtension(address, password, signMessage) {
+    // e.preventDefault();
+    console.log(signMessage, '000000000000000000');
+    const wallet = getStoredWallet(address, password);
+    // return signMessage => {
+    const signature = signWithPrivateKey(
+      signMessage,
+      Buffer.from(wallet.privateKey, 'hex')
+    );
+
+    //   return {
+    //     signature,
+    //     publicKey: Buffer.from(wallet.publicKey, "hex")
+    //   }
+    chrome.runtime.sendMessage(
+      {
+        method: 'LUNIE_SIGN_REQUEST_RESPONSE',
+        data: {
+          signature: signature,
+          publicKey: Buffer.from(wallet.publicKey, 'hex'),
+        },
+      },
+      function(response) {
+        console.log(response);
+        // if (response.status === 'failed') {
+        //   goTo(SeeExsistingAccounts);
+        // } else {
+        //   goTo(SeeExsistingAccounts);
+        // }
+      }
+    );
   }
+
+  const [password, setPassword] = React.useState('');
   return (
     <div className="session-approve">
       <h2>Approve Transaction</h2>
@@ -93,15 +126,15 @@ export default function SignExtension(props) {
             <ul className="table-invoice">
               <li>
                 <span>Subtotal</span>
-                <span>{subtotal}&nbsp;CLR</span>
+                <span>{fullDecimals(subtotal)}&nbsp;CLR</span>
               </li>
               <li>
                 <span>Network Fee</span>
-                <span>0.000918 CLR</span>
+                <span>{fullDecimals(networkfee)}&nbsp;CLR</span>
               </li>
               <li className="total-row">
                 <span>Total</span>
-                <span> 0.100918 CLR </span>
+                <span>{fullDecimals(total)}&nbsp;CLR</span>
               </li>
             </ul>
           </div>
@@ -115,6 +148,8 @@ export default function SignExtension(props) {
                 placeholder="Password"
                 className="tm-field"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -129,7 +164,20 @@ export default function SignExtension(props) {
             <button
               className="button right-button"
               id="approve-btn"
-              onClick={() => approve()}
+              onClick={() =>
+                signWithExtension(
+                  props.latestSignReq.msgs[0].value.from_address,
+                  password,
+                  {
+                    chain_id: props.latestSignReq.chain_id,
+                    account_number: props.latestSignReq.account_number,
+                    sequence: props.latestSignReq.sequence,
+                    fee: props.latestSignReq.fee,
+                    msgs: props.latestSignReq.msgs,
+                    memo: props.latestSignReq.memo,
+                  }
+                )
+              }
             >
               Approve
             </button>
