@@ -11,40 +11,43 @@ export default function SignExtension(props) {
   let total = subtotal + networkfee;
   function reject() {
     console.log('reject');
+    localStorage.removeItem('latestSignReq');
+    localStorage.removeItem('senderAddress');
+    window.close();
   }
 
+  const [error, setError] = React.useState(false);
   ///Sign A transaction using Extension
   function signWithExtension(address, password, signMessage) {
-    // e.preventDefault();
-    console.log(signMessage, '000000000000000000');
-    const wallet = getStoredWallet(address, password);
-    // return signMessage => {
-    const signature = signWithPrivateKey(
-      signMessage,
-      Buffer.from(wallet.privateKey, 'hex')
-    );
-
-    //   return {
-    //     signature,
-    //     publicKey: Buffer.from(wallet.publicKey, "hex")
-    //   }
-    chrome.runtime.sendMessage(
-      {
-        method: 'LUNIE_SIGN_REQUEST_RESPONSE',
-        data: {
-          signature: signature,
-          publicKey: Buffer.from(wallet.publicKey, 'hex'),
+    let wallet;
+    let signature;
+    try {
+      wallet = getStoredWallet(address, password);
+      signature = signWithPrivateKey(
+        signMessage,
+        Buffer.from(wallet.privateKey, 'hex')
+      );
+      chrome.runtime.sendMessage(
+        {
+          method: 'LUNIE_SIGN_REQUEST_RESPONSE',
+          data: {
+            signature: signature,
+            publicKey: Buffer.from(wallet.publicKey, 'hex'),
+          },
         },
-      },
-      function(response) {
-        console.log(response);
-        // if (response.status === 'failed') {
-        //   goTo(SeeExsistingAccounts);
-        // } else {
-        //   goTo(SeeExsistingAccounts);
-        // }
-      }
-    );
+        function(response) {
+          console.log(response);
+        }
+      );
+    } catch (err) {
+      setPassword('');
+      setError(true);
+    }
+  }
+
+  function passWordChange(e) {
+    setPassword(e.target.value);
+    setError(false);
   }
 
   const [password, setPassword] = React.useState('');
@@ -149,9 +152,10 @@ export default function SignExtension(props) {
                 className="tm-field"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => passWordChange(e)}
               />
             </div>
+            <div>{error && 'Password Incorrect'}</div>
           </div>
           <div className="session-approve-footer">
             <button
