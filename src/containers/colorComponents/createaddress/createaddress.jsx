@@ -32,32 +32,33 @@ export default function Home() {
 
   function createNewAddress(e) {
     e.preventDefault();
-    // var paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,30}$/;
+    var paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,30}$/;
+    console.log(paswd.match(values.password));
     // console.log(values.password.match(paswd));
     // if (values.password.match(paswd)) {
-    //   if (values.password === values.confirmpassword) {
-    const wallet = getNewWalletFromSeed(mnemonic);
-    chrome.runtime.sendMessage(
-      {
-        method: 'setextensionaddress',
-        data: {
-          wallet: wallet,
-          accountname: values.accountname,
-          password: values.password,
+    if (values.password === values.confirmpassword) {
+      const wallet = getNewWalletFromSeed(mnemonic);
+      chrome.runtime.sendMessage(
+        {
+          method: 'setextensionaddress',
+          data: {
+            wallet: wallet,
+            accountname: values.accountname,
+            password: values.password,
+          },
         },
-      },
-      function (response) {
-        console.log(response);
-        if (response.status === 'failed') {
-          goTo(SeeExsistingAccounts);
-        } else {
-          goTo(SeeExsistingAccounts);
+        function(response) {
+          console.log(response);
+          if (response.status === 'failed') {
+            goTo(SeeExsistingAccounts);
+          } else {
+            goTo(SeeExsistingAccounts);
+          }
         }
-      }
-    );
-    //   } else {
-    //     setError('Passwords do not match');
-    //   }
+      );
+    } else {
+      setError('Passwords do not match');
+    }
     // } else {
     //   setError('Password must be atleast 10 characters');
     // }
@@ -135,7 +136,11 @@ export default function Home() {
                       id="sign-up-password"
                       error={error.length > 0}
                     />
-                    {error.length > 0 && <span>{error}</span>}
+                    {error.length > 0 && (
+                      <span style={{ color: 'red', fontSize: '12px' }}>
+                        &#10006;&nbsp;{error}
+                      </span>
+                    )}
                   </div>
                 </div>
 

@@ -5,8 +5,8 @@ import { storeWallet } from '@rnssolution/color-keys';
 import { Queue } from './queue';
 const q = new Queue();
 var latestSignReq = 'latestsignreq';
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("REspose::", request)
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  console.log('REspose::', request);
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
       sendResponse({ status: localStorage });
@@ -15,13 +15,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
       sendResponse({ status: 'No Data for you Bro' });
     }
-<<<<<<< HEAD
-  }
-  else if (request.method == 'setextensionaddress') {
-=======
   } else if (request.method == 'setextensionaddress') {
-    console.log('setextensionaddress', 'chawal console');
->>>>>>> 72931c4f01f461644357fd589ec318308175b473
     try {
       storeWallet(
         request.data.wallet,
@@ -34,8 +28,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
   } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
     try {
-      console.log("LUNIE_SIGN_REQUEST_RESPONSE", request)
-      chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
+      console.log('LUNIE_SIGN_REQUEST_RESPONSE', request);
+      chrome.runtime.sendMessage({ greeting: 'hello' }, function(response) {
         console.log(response.farewell);
       });
       sendResponse({ status: 'success', request });
@@ -63,7 +57,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // export var senderAddress = request.data.payload.payload.senderAddress;
     sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
   } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
-    console.log("Response,", request)
+    console.log('Response,', request);
+    sendResponse({
+      data: {
+        message: {
+          payload: {
+            signature: 'abcd',
+            publicKey: '1234',
+          },
+          type: 'LUNIE_SIGN_REQUEST_RESPONSE',
+        },
+        type: 'FROM_LUNIE_EXTENSION',
+      },
+    });
   } else sendResponse({}); // snub them.
 });
 

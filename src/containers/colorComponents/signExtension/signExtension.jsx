@@ -12,7 +12,6 @@ export default function SignExtension(props) {
   let total = subtotal + networkfee;
   function reject() {
     console.log('reject');
-<<<<<<< HEAD
   }
 
   ///Sign A transaction using Extension
@@ -25,40 +24,21 @@ export default function SignExtension(props) {
       signMessage,
       Buffer.from(wallet.privateKey, 'hex')
     );
-    console.log("signature", signature)
+    console.log('signature', signature);
     //   return {
     //     signature,
     //     publicKey: Buffer.from(wallet.publicKey, "hex")
     //   }
-    console.log("wallet::::", wallet.publicKey)
-=======
-    localStorage.removeItem('latestSignReq');
-    localStorage.removeItem('senderAddress');
-
->>>>>>> 72931c4f01f461644357fd589ec318308175b473
+    console.log('wallet::::', wallet.publicKey);
     chrome.runtime.sendMessage(
       {
         method: 'rejectsignaccount',
         data: {
-<<<<<<< HEAD
-          signature: signature,
-          publicKey: wallet.publicKey,
-        },
-      },
-      function (response) {
-        console.log("RESPONSE", response);
-        // if (response.status === 'failed') {
-        //   goTo(SeeExsistingAccounts);
-        // } else {
-        //   goTo(SeeExsistingAccounts);
-        // }
-=======
           rejected: true,
         },
       },
       function(response) {
         console.log(response);
->>>>>>> 72931c4f01f461644357fd589ec318308175b473
       }
     );
     window.close();
@@ -120,14 +100,7 @@ export default function SignExtension(props) {
         From
         <div className="bech32-address">
           <div className="address">
-<<<<<<< HEAD
-            <CopyToClipboard
-              text={props.senderAddress}
-            // onCopy={() => setCopied()}
-            >
-=======
             <CopyToClipboard text={props.senderAddress} onCopy={() => set()}>
->>>>>>> 72931c4f01f461644357fd589ec318308175b473
               <span>
                 {props.senderAddress.substr(0, 6) +
                   '...' +
@@ -169,11 +142,7 @@ export default function SignExtension(props) {
                     <div className="address">
                       <CopyToClipboard
                         text={props.latestSignReq.msgs[0].value.to_address}
-<<<<<<< HEAD
-                      // onCopy={() => setCopied()}
-=======
                         onCopy={() => setTo()}
->>>>>>> 72931c4f01f461644357fd589ec318308175b473
                       >
                         <span>
                           {props.latestSignReq.msgs[0].value.to_address.substr(
