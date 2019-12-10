@@ -12,6 +12,7 @@ export default function SignExtension(props) {
   let total = subtotal + networkfee;
   function reject() {
     console.log('reject');
+<<<<<<< HEAD
   }
 
   ///Sign A transaction using Extension
@@ -30,10 +31,16 @@ export default function SignExtension(props) {
     //     publicKey: Buffer.from(wallet.publicKey, "hex")
     //   }
     console.log("wallet::::", wallet.publicKey)
+=======
+    localStorage.removeItem('latestSignReq');
+    localStorage.removeItem('senderAddress');
+
+>>>>>>> 72931c4f01f461644357fd589ec318308175b473
     chrome.runtime.sendMessage(
       {
-        method: 'LUNIE_SIGN_REQUEST_RESPONSE',
+        method: 'rejectsignaccount',
         data: {
+<<<<<<< HEAD
           signature: signature,
           publicKey: wallet.publicKey,
         },
@@ -45,8 +52,63 @@ export default function SignExtension(props) {
         // } else {
         //   goTo(SeeExsistingAccounts);
         // }
+=======
+          rejected: true,
+        },
+      },
+      function(response) {
+        console.log(response);
+>>>>>>> 72931c4f01f461644357fd589ec318308175b473
       }
     );
+    window.close();
+  }
+
+  const [error, setError] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  const [tocopied, settoCopied] = React.useState(false);
+  ///Sign A transaction using Extension
+  function signWithExtension(address, password, signMessage) {
+    let wallet;
+    let signature;
+    try {
+      wallet = getStoredWallet(address, password);
+      signature = signWithPrivateKey(
+        signMessage,
+        Buffer.from(wallet.privateKey, 'hex')
+      );
+      chrome.runtime.sendMessage(
+        {
+          method: 'LUNIE_SIGN_REQUEST_RESPONSE',
+          data: {
+            signature: signature,
+            publicKey: Buffer.from(wallet.publicKey, 'hex'),
+          },
+        },
+        function(response) {
+          console.log(response);
+        }
+      );
+    } catch (err) {
+      setPassword('');
+      setError(true);
+      setTimeout(() => setError(false), 3000);
+    }
+  }
+
+  function passWordChange(e) {
+    setPassword(e.target.value);
+    setError(false);
+  }
+
+  function set() {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  function setTo() {
+    settoCopied(true);
+    setTimeout(() => settoCopied(false), 2000);
   }
 
   const [password, setPassword] = React.useState('');
@@ -58,10 +120,14 @@ export default function SignExtension(props) {
         From
         <div className="bech32-address">
           <div className="address">
+<<<<<<< HEAD
             <CopyToClipboard
               text={props.senderAddress}
             // onCopy={() => setCopied()}
             >
+=======
+            <CopyToClipboard text={props.senderAddress} onCopy={() => set()}>
+>>>>>>> 72931c4f01f461644357fd589ec318308175b473
               <span>
                 {props.senderAddress.substr(0, 6) +
                   '...' +
@@ -69,6 +135,11 @@ export default function SignExtension(props) {
                     props.senderAddress.length - 4,
                     props.senderAddress.length - 1
                   )}
+                {copied && (
+                  <span style={{ color: 'green', fontSize: '10px' }}>
+                    &nbsp;&#10004;&nbsp;Copied
+                  </span>
+                )}
               </span>
             </CopyToClipboard>
           </div>
@@ -98,7 +169,11 @@ export default function SignExtension(props) {
                     <div className="address">
                       <CopyToClipboard
                         text={props.latestSignReq.msgs[0].value.to_address}
+<<<<<<< HEAD
                       // onCopy={() => setCopied()}
+=======
+                        onCopy={() => setTo()}
+>>>>>>> 72931c4f01f461644357fd589ec318308175b473
                       >
                         <span>
                           {props.latestSignReq.msgs[0].value.to_address.substr(
@@ -119,6 +194,11 @@ export default function SignExtension(props) {
                       <i className="material-icons">check</i>
                     </div>
                   </div>
+                  {tocopied && (
+                    <span style={{ color: 'green', fontSize: '10px' }}>
+                      &nbsp;&#10004;&nbsp;Copied
+                    </span>
+                  )}
                   <span>&nbsp;- (Sent via Color Wallet)</span>
                 </div>
               </div>
@@ -151,8 +231,15 @@ export default function SignExtension(props) {
                 className="tm-field"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => passWordChange(e)}
               />
+            </div>
+            <div>
+              {error && (
+                <span style={{ color: 'red', fontSize: '14px' }}>
+                  Incorrect Password
+                </span>
+              )}
             </div>
           </div>
           <div className="session-approve-footer">

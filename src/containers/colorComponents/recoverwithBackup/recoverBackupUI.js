@@ -1,10 +1,42 @@
 /*global chrome*/
 import React from 'react';
-import { goBack } from 'react-chrome-extension-router';
+import { goBack, goTo } from 'react-chrome-extension-router';
 
+import { getNewWalletFromSeed } from '@rnssolution/color-keys';
 import colorplatform from '../../../assets/img/color-platform.svg';
 
 export default function RecoverWithBackupUI() {
+  const [values, setValues] = React.useState({
+    accountname: '',
+    password: '',
+    confirmpassword: '',
+    seed: '',
+  });
+
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+  function recover() {
+    const wallet = getNewWalletFromSeed(values.seed);
+    chrome.runtime.sendMessage(
+      {
+        method: 'setextensionaddress',
+        data: {
+          wallet: wallet,
+          accountname: values.accountname,
+          password: values.password,
+        },
+      },
+      function(response) {
+        console.log(response);
+        if (response.status === 'failed') {
+          goTo(SeeExsistingAccounts);
+        } else {
+          goTo(SeeExsistingAccounts);
+        }
+      }
+    );
+  }
   return (
     <div className="session-frame">
       <a href="#/" className="router-link-active">
@@ -37,6 +69,7 @@ export default function RecoverWithBackupUI() {
                       className="tm-field"
                       id="import-name"
                       vue-focus="vue-focus"
+                      onChange={handleChange('accountname')}
                     />
                   </div>
                 </div>
@@ -53,6 +86,7 @@ export default function RecoverWithBackupUI() {
                       placeholder="Must be at least 10 characters"
                       className="tm-field"
                       id="import-password"
+                      onChange={handleChange('password')}
                     />
                   </div>
                 </div>
@@ -69,6 +103,7 @@ export default function RecoverWithBackupUI() {
                       placeholder="Enter password again"
                       className="tm-field"
                       id="import-password-confirmation"
+                      onChange={handleChange('confirmpassword')}
                     />
                   </div>
                 </div>
@@ -87,12 +122,15 @@ export default function RecoverWithBackupUI() {
                         resize: 'none',
                         height: '64px',
                       }}
+                      onChange={handleChange('seed')}
                     ></textarea>
                   </div>
                 </div>
               </div>
               <div className="session-footer">
-                <button className="button">Recover</button>
+                <button className="button" onClick={() => recover()}>
+                  Recover
+                </button>
               </div>
             </main>
           </form>

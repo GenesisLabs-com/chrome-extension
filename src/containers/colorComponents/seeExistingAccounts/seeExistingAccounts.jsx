@@ -53,7 +53,7 @@ export default function SeeExistingAccounts() {
 
   const [allData] = React.useState(allStorage());
 
-  // const [copied, setCopied] = React.useState([]);
+  const [copied, setCopied] = React.useState();
   //   const [indexData, setIndexData] = React.useState(indexStorage());
   //   console.log(indexData);
   // function sendDatatowebsite() {
@@ -61,6 +61,10 @@ export default function SeeExistingAccounts() {
   //   var data = { type: "FROM_PAGE", text: JSON.stringify(allData) };
   //   window.postMessage(data, "*");
   // }
+  const handleCopied = (event, index) => {
+    setCopied(index);
+    setTimeout(() => setCopied(), 2000);
+  };
   return (
     <div className="session-frame">
       <a href="#/" className="router-link-active">
@@ -93,7 +97,7 @@ export default function SeeExistingAccounts() {
                           <div className="address" id="TooltipExample">
                             <CopyToClipboard
                               text={account.address}
-                              // onCopy={() => setCopied()}
+                              onCopy={(e) => handleCopied(e, key)}
                             >
                               <span>
                                 {account.address.substr(0, 6) +
@@ -105,6 +109,11 @@ export default function SeeExistingAccounts() {
                               </span>
                             </CopyToClipboard>
                           </div>
+                          {copied === key && (
+                            <span style={{ color: 'green', fontSize: '10px' }}>
+                              &nbsp;&#10004;&nbsp;Copied
+                            </span>
+                          )}
                         </div>
                       </div>
                       <a
