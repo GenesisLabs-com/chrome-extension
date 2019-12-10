@@ -1,3 +1,4 @@
+/*global chrome*/
 import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -23,21 +24,22 @@ export default function SignExtension(props) {
       signMessage,
       Buffer.from(wallet.privateKey, 'hex')
     );
-
+    console.log("signature", signature)
     //   return {
     //     signature,
     //     publicKey: Buffer.from(wallet.publicKey, "hex")
     //   }
+    console.log("wallet::::", wallet.publicKey)
     chrome.runtime.sendMessage(
       {
         method: 'LUNIE_SIGN_REQUEST_RESPONSE',
         data: {
           signature: signature,
-          publicKey: Buffer.from(wallet.publicKey, 'hex'),
+          publicKey: wallet.publicKey,
         },
       },
-      function(response) {
-        console.log(response);
+      function (response) {
+        console.log("RESPONSE", response);
         // if (response.status === 'failed') {
         //   goTo(SeeExsistingAccounts);
         // } else {
@@ -58,7 +60,7 @@ export default function SignExtension(props) {
           <div className="address">
             <CopyToClipboard
               text={props.senderAddress}
-              // onCopy={() => setCopied()}
+            // onCopy={() => setCopied()}
             >
               <span>
                 {props.senderAddress.substr(0, 6) +
@@ -96,7 +98,7 @@ export default function SignExtension(props) {
                     <div className="address">
                       <CopyToClipboard
                         text={props.latestSignReq.msgs[0].value.to_address}
-                        // onCopy={() => setCopied()}
+                      // onCopy={() => setCopied()}
                       >
                         <span>
                           {props.latestSignReq.msgs[0].value.to_address.substr(

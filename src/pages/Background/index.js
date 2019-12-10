@@ -5,7 +5,8 @@ import { storeWallet } from '@rnssolution/color-keys';
 import { Queue } from './queue';
 const q = new Queue();
 var latestSignReq = 'latestsignreq';
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  console.log("REspose::", request)
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
       sendResponse({ status: localStorage });
@@ -14,7 +15,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     } else {
       sendResponse({ status: 'No Data for you Bro' });
     }
-  } else if (request.method == 'setextensionaddress') {
+  }
+  else if (request.method == 'setextensionaddress') {
     try {
       storeWallet(
         request.data.wallet,
@@ -25,10 +27,24 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     } catch (err) {
       sendResponse({ status: err.message, request });
     }
+  } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
+    try {
+      console.log("LUNIE_SIGN_REQUEST_RESPONSE", request)
+      chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
+        console.log(response.farewell);
+      });
+      sendResponse({ status: 'success', request });
+    } catch (err) {
+      sendResponse({ status: err.message, request });
+    }
   } else if (request.method == 'getextensionaddress') {
     var values = allStorage();
     sendResponse({ values });
-  } else if (request.method == 'LUNIE_SIGN_REQUEST') {
+  }
+  // else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
+  //   console.log("LUNIE_SIGN_REQUEST_RESPONSELUNIE_SIGN_REQUEST_RESPONSELUNIE_SIGN_REQUEST_RESPONSELUNIE_SIGN_REQUEST_RESPONSE")
+  // }
+  else if (request.method == 'LUNIE_SIGN_REQUEST') {
     let temp = request.data.payload.payload.signMessage;
     temp = JSON.parse(temp);
     q.add(temp);
@@ -41,6 +57,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     );
     // export var senderAddress = request.data.payload.payload.senderAddress;
     sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
+  } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
+    console.log("Response,", request)
   } else sendResponse({}); // snub them.
 });
 

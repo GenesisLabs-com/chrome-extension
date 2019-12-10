@@ -40,7 +40,7 @@ export default function Home() {
           password: values.password,
         },
       },
-      function(response) {
+      function (response) {
         console.log(response);
         if (response.status === 'failed') {
           goTo(SeeExsistingAccounts);
