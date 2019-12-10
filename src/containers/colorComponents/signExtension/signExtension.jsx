@@ -1,3 +1,4 @@
+/*global chrome*/
 import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -13,10 +14,24 @@ export default function SignExtension(props) {
     console.log('reject');
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');
+
+    chrome.runtime.sendMessage(
+      {
+        method: 'rejectsignaccount',
+        data: {
+          rejected: true,
+        },
+      },
+      function(response) {
+        console.log(response);
+      }
+    );
     window.close();
   }
 
   const [error, setError] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  const [tocopied, settoCopied] = React.useState(false);
   ///Sign A transaction using Extension
   function signWithExtension(address, password, signMessage) {
     let wallet;
@@ -42,12 +57,23 @@ export default function SignExtension(props) {
     } catch (err) {
       setPassword('');
       setError(true);
+      setTimeout(() => setError(false), 3000);
     }
   }
 
   function passWordChange(e) {
     setPassword(e.target.value);
     setError(false);
+  }
+
+  function set() {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  function setTo() {
+    settoCopied(true);
+    setTimeout(() => settoCopied(false), 2000);
   }
 
   const [password, setPassword] = React.useState('');
@@ -59,10 +85,7 @@ export default function SignExtension(props) {
         From
         <div className="bech32-address">
           <div className="address">
-            <CopyToClipboard
-              text={props.senderAddress}
-              // onCopy={() => setCopied()}
-            >
+            <CopyToClipboard text={props.senderAddress} onCopy={() => set()}>
               <span>
                 {props.senderAddress.substr(0, 6) +
                   '...' +
@@ -70,6 +93,11 @@ export default function SignExtension(props) {
                     props.senderAddress.length - 4,
                     props.senderAddress.length - 1
                   )}
+                {copied && (
+                  <span style={{ color: 'green', fontSize: '10px' }}>
+                    &nbsp;&#10004;&nbsp;Copied
+                  </span>
+                )}
               </span>
             </CopyToClipboard>
           </div>
@@ -99,7 +127,7 @@ export default function SignExtension(props) {
                     <div className="address">
                       <CopyToClipboard
                         text={props.latestSignReq.msgs[0].value.to_address}
-                        // onCopy={() => setCopied()}
+                        onCopy={() => setTo()}
                       >
                         <span>
                           {props.latestSignReq.msgs[0].value.to_address.substr(
@@ -120,6 +148,11 @@ export default function SignExtension(props) {
                       <i className="material-icons">check</i>
                     </div>
                   </div>
+                  {tocopied && (
+                    <span style={{ color: 'green', fontSize: '10px' }}>
+                      &nbsp;&#10004;&nbsp;Copied
+                    </span>
+                  )}
                   <span>&nbsp;- (Sent via Color Wallet)</span>
                 </div>
               </div>
@@ -155,7 +188,13 @@ export default function SignExtension(props) {
                 onChange={(e) => passWordChange(e)}
               />
             </div>
-            <div>{error && 'Password Incorrect'}</div>
+            <div>
+              {error && (
+                <span style={{ color: 'red', fontSize: '14px' }}>
+                  Incorrect Password
+                </span>
+              )}
+            </div>
           </div>
           <div className="session-approve-footer">
             <button

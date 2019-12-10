@@ -23,6 +23,8 @@ export default function Home() {
     address: '',
   });
 
+  const [error, setError] = React.useState('');
+
   const [mnemonic] = React.useState(getSeed());
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -30,6 +32,10 @@ export default function Home() {
 
   function createNewAddress(e) {
     e.preventDefault();
+    // var paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,30}$/;
+    // console.log(values.password.match(paswd));
+    // if (values.password.match(paswd)) {
+    //   if (values.password === values.confirmpassword) {
     const wallet = getNewWalletFromSeed(mnemonic);
     chrome.runtime.sendMessage(
       {
@@ -49,6 +55,13 @@ export default function Home() {
         }
       }
     );
+    //   } else {
+    //     setError('Passwords do not match');
+    //   }
+    // } else {
+    //   setError('Password must be atleast 10 characters');
+    // }
+
     // try {
     //   storeWallet(wallet, values.accountname, values.password);
     //   goTo(SeeExsistingAccounts);
@@ -120,7 +133,9 @@ export default function Home() {
                       placeholder="Must be at least 10 characters"
                       className="tm-field"
                       id="sign-up-password"
+                      error={error.length > 0}
                     />
+                    {error.length > 0 && <span>{error}</span>}
                   </div>
                 </div>
 

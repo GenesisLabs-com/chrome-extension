@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       sendResponse({ status: 'No Data for you Bro' });
     }
   } else if (request.method == 'setextensionaddress') {
+    console.log('setextensionaddress', 'chawal console');
     try {
       storeWallet(
         request.data.wallet,
