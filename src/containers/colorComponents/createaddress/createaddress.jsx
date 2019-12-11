@@ -24,45 +24,55 @@ export default function Home() {
   });
 
   const [error, setError] = React.useState('');
-
+  const [accounterror, setAccountError] = React.useState('');
   const [mnemonic] = React.useState(getSeed());
   const handleChange = (name) => (event) => {
+    if (name === 'accountname') {
+      setAccountError('');
+    }
+    if (name === 'password' || name === 'confirmpassword') {
+      setError('');
+    }
     setValues({ ...values, [name]: event.target.value });
   };
 
   function createNewAddress(e) {
     e.preventDefault();
-    var paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,30}$/;
-    console.log(paswd.match(values.password));
+    var aname = /^[a-zA-Z0-9!@#$%^&*]{5,}$/;
+    var paswd = /^[a-zA-Z0-9!@#$%^&*]{10,}$/;
+    console.log(paswd.test(values.password));
     // console.log(values.password.match(paswd));
-    // if (values.password.match(paswd)) {
-    if (values.password === values.confirmpassword) {
-      const wallet = getNewWalletFromSeed(mnemonic);
-      chrome.runtime.sendMessage(
-        {
-          method: 'setextensionaddress',
-          data: {
-            wallet: wallet,
-            accountname: values.accountname,
-            password: values.password,
-          },
-        },
-        function(response) {
-          console.log(response);
-          if (response.status === 'failed') {
-            goTo(SeeExsistingAccounts);
-          } else {
-            goTo(SeeExsistingAccounts);
-          }
+    if (aname.test(values.accountname)) {
+      if (paswd.test(values.password)) {
+        if (values.password === values.confirmpassword) {
+          const wallet = getNewWalletFromSeed(mnemonic);
+          chrome.runtime.sendMessage(
+            {
+              method: 'setextensionaddress',
+              data: {
+                wallet: wallet,
+                accountname: values.accountname,
+                password: values.password,
+              },
+            },
+            function(response) {
+              console.log(response);
+              if (response.status === 'failed') {
+                goTo(SeeExsistingAccounts);
+              } else {
+                goTo(SeeExsistingAccounts);
+              }
+            }
+          );
+        } else {
+          setError('Passwords do not match');
         }
-      );
+      } else {
+        setError('Password must be atleast 10 characters');
+      }
     } else {
-      setError('Passwords do not match');
+      setAccountError('Name must be atleast 5 characters');
     }
-    // } else {
-    //   setError('Password must be atleast 10 characters');
-    // }
-
     // try {
     //   storeWallet(wallet, values.accountname, values.password);
     //   goTo(SeeExsistingAccounts);
@@ -117,6 +127,11 @@ export default function Home() {
                       className="tm-field"
                       id="sign-up-name"
                     />
+                    {accounterror.length > 0 && (
+                      <span style={{ color: 'red', fontSize: '12px' }}>
+                        &#10006;&nbsp;{accounterror}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="tm-form-group">
@@ -160,6 +175,11 @@ export default function Home() {
                       className="tm-field"
                       id="sign-up-password-confirm"
                     />
+                    {error.length > 0 && (
+                      <span style={{ color: 'red', fontSize: '12px' }}>
+                        &#10006;&nbsp;{error}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="sign-up-seed-group tm-form-group">
