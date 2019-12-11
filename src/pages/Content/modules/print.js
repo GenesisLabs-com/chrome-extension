@@ -2,6 +2,24 @@ var temp = 0;
 export const printLine = (line, arg2) => {
   console.log('===> FROM THE PRINT MODULE:', line, arg2);
 };
+chrome.runtime.onMessage.addListener(
+  function (request, sender) {
+
+    var dataextension = [];
+    if (request.signature && request.publicKey)
+      dataextension.push({ "signature": request.signature, "publicKey": request.publicKey })
+
+    var data = {
+      message: {
+        payload: dataextension,
+        type: "LUNIE_SIGN_REQUEST_RESPONSE"
+      },
+      type: "FROM_LUNIE_EXTENSION"
+    };
+    dataextension = []
+    window.postMessage(data, "*")
+    console.log("tab[0].idtab[0].idtab[0].idtab[0].idtab[0].idtab[0].id")
+  });
 
 // export const getDatafromExtension = (data) => {
 //   // console.log('data from extension', data);
@@ -41,9 +59,7 @@ window.addEventListener("message", function (e) {
     temp = temp + 1
     INIT_EXTENSION()
   }
-  if (request.greeting == "hello") {
-    console.log("Helllloo")
-  }
+
   if (e.source === window && e.data.type && "FROM_LUNIE_IO" === e.data.type && (e.data) && e.data.payload && e.data.payload.type == "GET_WALLETS") {
     //listenerFunc()
     var dataextension;
@@ -98,9 +114,4 @@ window.addEventListener("message", function (e) {
   }
 });
 
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
-    console.log("from a content script:from the extension");
-    if (request.greeting == "hello")
-      sendResponse({ farewell: "goodbye" });
-  });
+

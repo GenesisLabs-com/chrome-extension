@@ -5,7 +5,7 @@ import { storeWallet } from '@rnssolution/color-keys';
 import { Queue } from './queue';
 const q = new Queue();
 var latestSignReq = 'latestsignreq';
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log('REspose::', request);
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
@@ -29,9 +29,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
     try {
       console.log('LUNIE_SIGN_REQUEST_RESPONSE', request);
-      chrome.runtime.sendMessage({ greeting: 'hello' }, function(response) {
-        console.log(response.farewell);
+
+      chrome.tabs.query({
+        currentWindow: true,
+        active: true
+        // Select active tab of the current window
+      }, function (tab) {
+        // console.log("TAB ID", tab[0].id)
+        chrome.tabs.sendMessage(
+          // Send a message to the content script
+          tab[0].id, { signature: request.data.signature, publicKey: request.data.publicKey }
+        );
       });
+
+
       sendResponse({ status: 'success', request });
     } catch (err) {
       sendResponse({ status: err.message, request });
