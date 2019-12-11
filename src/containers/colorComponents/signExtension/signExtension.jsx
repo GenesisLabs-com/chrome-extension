@@ -11,7 +11,9 @@ export default function SignExtension(props) {
   networkfee = networkfee * 0.000000001;
   let total = subtotal + networkfee;
   function reject() {
-    console.log('reject');
+    localStorage.removeItem('latestSignReq');
+    localStorage.removeItem('senderAddress');
+    window.close();
   }
 
   ///Sign A transaction using Extension
@@ -39,6 +41,8 @@ export default function SignExtension(props) {
       },
       function(response) {
         console.log(response);
+        localStorage.removeItem('latestSignReq');
+        localStorage.removeItem('senderAddress');
       }
     );
     window.close();
