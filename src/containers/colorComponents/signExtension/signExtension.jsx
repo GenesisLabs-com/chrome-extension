@@ -11,25 +11,26 @@ export default function SignExtension(props) {
   networkfee = networkfee * 0.000000001;
   let total = subtotal + networkfee;
   function reject() {
-    console.log('reject');
+    localStorage.removeItem('latestSignReq');
+    localStorage.removeItem('senderAddress');
+    window.close();
   }
 
   ///Sign A transaction using Extension
   function signWithExtension(address, password, signMessage) {
     // e.preventDefault();
-    console.log(signMessage, '000000000000000000');
     const wallet = getStoredWallet(address, password);
     // return signMessage => {
     const signature = signWithPrivateKey(
       signMessage,
       Buffer.from(wallet.privateKey, 'hex')
     );
-    console.log('signature', signature);
+    console.log("signature", signature)
     //   return {
     //     signature,
     //     publicKey: Buffer.from(wallet.publicKey, "hex")
     //   }
-    console.log('wallet::::', wallet.publicKey);
+    console.log("wallet::::", wallet.publicKey)
     chrome.runtime.sendMessage(
       {
         method: 'rejectsignaccount',
@@ -37,8 +38,9 @@ export default function SignExtension(props) {
           rejected: true,
         },
       },
-      function(response) {
-        console.log(response);
+      function (response) {
+        localStorage.removeItem('latestSignReq');
+        localStorage.removeItem('senderAddress');
       }
     );
     window.close();
@@ -57,15 +59,18 @@ export default function SignExtension(props) {
         signMessage,
         Buffer.from(wallet.privateKey, 'hex')
       );
+      console.log("wallet.publicKey", wallet.publicKey)
+
+      console.log("signaturereal", signature.toString('base64'))
       chrome.runtime.sendMessage(
         {
           method: 'LUNIE_SIGN_REQUEST_RESPONSE',
           data: {
-            signature: signature,
-            publicKey: Buffer.from(wallet.publicKey, 'hex'),
+            signature: signature.toString('base64'),
+            publicKey: wallet.publicKey,
           },
         },
-        function(response) {
+        function (response) {
           console.log(response);
         }
       );

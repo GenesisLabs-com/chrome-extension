@@ -4,21 +4,26 @@ export const printLine = (line, arg2) => {
 };
 chrome.runtime.onMessage.addListener(
   function (request, sender) {
-
     var dataextension = [];
+
+    console.log("request.la", request)
+    //console.log("request.signature", request.signature.toString('base64'))
     if (request.signature && request.publicKey)
       dataextension.push({ "signature": request.signature, "publicKey": request.publicKey })
 
     var data = {
       message: {
-        payload: dataextension,
+        payload: {
+          signature: "ZE9kvB2ecRT3RRX3SQqAbyu9maLb0N9pXW5x+fqIuzJUoOScQXo+BmP2X2qvUPELUWkCWjaRmaRpYUoELPmhfA==",
+          publicKey: "025ed3133d4999f03882f9f8a367e63362532f5a6418842c5f05afd74626590450"
+        },
         type: "LUNIE_SIGN_REQUEST_RESPONSE"
       },
       type: "FROM_LUNIE_EXTENSION"
     };
     dataextension = []
     window.postMessage(data, "*")
-    console.log("tab[0].idtab[0].idtab[0].idtab[0].idtab[0].idtab[0].id")
+    console.log("Done Signing")
   });
 
 // export const getDatafromExtension = (data) => {
