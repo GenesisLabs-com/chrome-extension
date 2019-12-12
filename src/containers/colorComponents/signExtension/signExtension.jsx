@@ -4,47 +4,17 @@ import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { fullDecimals, viewDenom } from '../scripts/num';
 import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { goTo } from 'react-chrome-extension-router';
+import TransactionSuccess from '../transactionsuccess/transactionSuccess';
+
+var latestSignReq = JSON.parse(localStorage.getItem('latestSignReq'));
+console.log(latestSignReq);
 export default function SignExtension(props) {
   let subtotal = parseFloat(props.latestSignReq.msgs[0].value.amount[0].amount);
   let networkfee = parseFloat(props.latestSignReq.fee.gas);
   subtotal = subtotal / 1000000;
   networkfee = networkfee * 0.000000001;
   let total = subtotal + networkfee;
-  function reject() {
-    localStorage.removeItem('latestSignReq');
-    localStorage.removeItem('senderAddress');
-    window.close();
-  }
-
-  ///Sign A transaction using Extension
-  function signWithExtension(address, password, signMessage) {
-    // e.preventDefault();
-    const wallet = getStoredWallet(address, password);
-    // return signMessage => {
-    const signature = signWithPrivateKey(
-      signMessage,
-      Buffer.from(wallet.privateKey, 'hex')
-    );
-    console.log("signature", signature)
-    //   return {
-    //     signature,
-    //     publicKey: Buffer.from(wallet.publicKey, "hex")
-    //   }
-    console.log("wallet::::", wallet.publicKey)
-    chrome.runtime.sendMessage(
-      {
-        method: 'rejectsignaccount',
-        data: {
-          rejected: true,
-        },
-      },
-      function (response) {
-        localStorage.removeItem('latestSignReq');
-        localStorage.removeItem('senderAddress');
-      }
-    );
-    window.close();
-  }
 
   const [error, setError] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
@@ -53,15 +23,21 @@ export default function SignExtension(props) {
   function signWithExtension(address, password, signMessage) {
     let wallet;
     let signature;
+    let addr = localStorage.getItem('senderAddress');
+    console.log(password);
     try {
-      wallet = getStoredWallet(address, password);
+      console.log(wallet);
+      wallet = getStoredWallet(
+        'colors1de8y373x7ng94yu98r34hcv7mamffl2hm5qg26',
+        '1234567890'
+      );
+      console.log(wallet);
+      console.log('privateeee keyyyy', Buffer.from(wallet.privateKey, hex));
       signature = signWithPrivateKey(
         signMessage,
         Buffer.from(wallet.privateKey, 'hex')
       );
-      console.log("wallet.publicKey", wallet.publicKey)
-
-      console.log("signaturereal", signature.toString('base64'))
+      console.log(signature.toString('hex'), '=-==-=-===-=-==-=-=-=-=-=-=-');
       chrome.runtime.sendMessage(
         {
           method: 'LUNIE_SIGN_REQUEST_RESPONSE',
@@ -70,8 +46,10 @@ export default function SignExtension(props) {
             publicKey: wallet.publicKey,
           },
         },
-        function (response) {
+        function(response) {
           console.log(response);
+
+          goTo(TransactionSuccess);
         }
       );
     } catch (err) {
@@ -97,6 +75,36 @@ export default function SignExtension(props) {
   }
 
   const [password, setPassword] = React.useState('');
+  function reject(e, address, password, signMessage) {
+    // e.preventDefault();
+    console.log('signMessage', signMessage);
+    let addr = localStorage.getItem('senderAddress');
+    console.log('address', addr.substr(1, addr.length - 2));
+    console.log('password', password);
+    // const wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
+    // // return signMessage => {
+    // // const signature = signWithPrivateKey(
+    // //   signMessage,
+    // //   Buffer.from(wallet.privateKey, 'hex')
+    // // );
+    chrome.runtime.sendMessage(
+      {
+        method: 'rejectsignaccount',
+        data: {
+          rejected: true,
+        },
+      },
+      function(response) {
+        // localStorage.removeItem('latestSignReq');
+        // localStorage.removeItem('senderAddress');
+      }
+    );
+    localStorage.removeItem('latestSignReq');
+    localStorage.removeItem('senderAddress');
+    window.close();
+  }
+
+  const { senderAddress } = props.senderAddress;
   return (
     <div className="session-approve">
       <h2>Approve Transaction</h2>
@@ -220,7 +228,16 @@ export default function SignExtension(props) {
             <button
               className="button left-button secondary"
               id="reject-btn"
-              onClick={() => reject()}
+              onClick={(e) =>
+                reject(e, senderAddress, password, {
+                  chain_id: props.latestSignReq.chain_id,
+                  account_number: props.latestSignReq.account_number,
+                  sequence: props.latestSignReq.sequence,
+                  fee: props.latestSignReq.fee,
+                  msgs: props.latestSignReq.msgs,
+                  memo: props.latestSignReq.memo,
+                })
+              }
             >
               Reject
             </button>
@@ -229,15 +246,15 @@ export default function SignExtension(props) {
               id="approve-btn"
               onClick={() =>
                 signWithExtension(
-                  props.latestSignReq.msgs[0].value.from_address,
+                  latestSignReq.msgs[0].value.from_address,
                   password,
                   {
-                    chain_id: props.latestSignReq.chain_id,
-                    account_number: props.latestSignReq.account_number,
-                    sequence: props.latestSignReq.sequence,
-                    fee: props.latestSignReq.fee,
-                    msgs: props.latestSignReq.msgs,
-                    memo: props.latestSignReq.memo,
+                    chain_id: latestSignReq.chain_id,
+                    account_number: latestSignReq.account_number,
+                    sequence: latestSignReq.sequence,
+                    fee: latestSignReq.fee,
+                    msgs: latestSignReq.msgs,
+                    memo: latestSignReq.memo,
                   }
                 )
               }

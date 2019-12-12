@@ -26,6 +26,8 @@ export default function Home() {
   const [error, setError] = React.useState('');
   const [accounterror, setAccountError] = React.useState('');
   const [mnemonic] = React.useState(getSeed());
+  const [check, setCheck] = React.useState(false);
+  const [checkerr, setCheckErr] = React.useState('');
   const handleChange = (name) => (event) => {
     if (name === 'accountname') {
       setAccountError('');
@@ -40,30 +42,33 @@ export default function Home() {
     e.preventDefault();
     var aname = /^[a-zA-Z0-9!@#$%^&*]{5,}$/;
     var paswd = /^[a-zA-Z0-9!@#$%^&*]{10,}$/;
-    console.log(paswd.test(values.password));
-    // console.log(values.password.match(paswd));
+
     if (aname.test(values.accountname)) {
       if (paswd.test(values.password)) {
         if (values.password === values.confirmpassword) {
-          const wallet = getNewWalletFromSeed(mnemonic);
-          chrome.runtime.sendMessage(
-            {
-              method: 'setextensionaddress',
-              data: {
-                wallet: wallet,
-                accountname: values.accountname,
-                password: values.password,
+          if (check) {
+            const wallet = getNewWalletFromSeed(mnemonic);
+            chrome.runtime.sendMessage(
+              {
+                method: 'setextensionaddress',
+                data: {
+                  wallet: wallet,
+                  accountname: values.accountname,
+                  password: values.password,
+                },
               },
-            },
-            function(response) {
-              console.log(response);
-              if (response.status === 'failed') {
-                goTo(SeeExsistingAccounts);
-              } else {
-                goTo(SeeExsistingAccounts);
+              function(response) {
+                console.log(response);
+                if (response.status === 'failed') {
+                  goTo(SeeExsistingAccounts);
+                } else {
+                  goTo(SeeExsistingAccounts);
+                }
               }
-            }
-          );
+            );
+          } else {
+            setCheckErr('Recovery Confirmation is Required');
+          }
         } else {
           setError('Passwords do not match');
         }
@@ -80,6 +85,11 @@ export default function Home() {
     //   console.log(err.message);
     //   goTo(SeeExsistingAccounts);
     // }
+  }
+
+  function changeCheckbox(e) {
+    setCheck(!check);
+    setCheckErr('');
   }
 
   // function getWallet(e) {
@@ -128,9 +138,9 @@ export default function Home() {
                       id="sign-up-name"
                     />
                     {accounterror.length > 0 && (
-                      <span style={{ color: 'red', fontSize: '12px' }}>
+                      <div className="tm-form-msg sm tm-form-msg--error">
                         &#10006;&nbsp;{accounterror}
-                      </span>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -152,9 +162,9 @@ export default function Home() {
                       error={error.length > 0}
                     />
                     {error.length > 0 && (
-                      <span style={{ color: 'red', fontSize: '12px' }}>
+                      <div className="tm-form-msg sm tm-form-msg--error">
                         &#10006;&nbsp;{error}
-                      </span>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -176,9 +186,9 @@ export default function Home() {
                       id="sign-up-password-confirm"
                     />
                     {error.length > 0 && (
-                      <span style={{ color: 'red', fontSize: '12px' }}>
+                      <div className="tm-form-msg sm tm-form-msg--error">
                         &#10006;&nbsp;{error}
-                      </span>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -201,6 +211,25 @@ export default function Home() {
                         height: '98px',
                       }}
                     />
+                  </div>
+                  <div className="field-checkbox-input">
+                    <label
+                      for="sign-up-warning"
+                      className="field-checkbox-label"
+                    >
+                      <input
+                        id="sign-up-warning"
+                        type="checkbox"
+                        onChange={changeCheckbox}
+                        checked={check}
+                      />
+                      I understand that lost seeds cannot be recovered.
+                    </label>
+                    {checkerr.length !== 0 && (
+                      <div className="tm-form-msg sm tm-form-msg--error">
+                        Recovery confirmation is required
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

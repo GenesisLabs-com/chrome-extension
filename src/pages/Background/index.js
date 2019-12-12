@@ -3,10 +3,15 @@ import '../../assets/img/icon-128.png';
 
 import { storeWallet } from '@rnssolution/color-keys';
 import { Queue } from './queue';
+
+//make new queue to get latest sign requests
 const q = new Queue();
+
+//latestsignrequest is set to first element of Queue
 var latestSignReq = 'latestsignreq';
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log('REspose::', request);
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  //starting messages for extension communication
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
       sendResponse({ status: localStorage });
@@ -15,7 +20,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else {
       sendResponse({ status: 'No Data for you Bro' });
     }
-  } else if (request.method == 'setextensionaddress') {
+  }
+
+  //set extension addresses to localstorage
+  else if (request.method == 'setextensionaddress') {
     try {
       storeWallet(
         request.data.wallet,
@@ -26,64 +34,96 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } catch (err) {
       sendResponse({ status: err.message, request });
     }
-  } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
+  }
+
+  //send approve response to wallet
+  else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
     try {
       console.log('LUNIE_SIGN_REQUEST_RESPONSE', request);
 
-      chrome.tabs.query({
-        currentWindow: true,
-        active: true
-        // Select active tab of the current window
-      }, function (tab) {
-        // console.log("TAB ID", tab[0].id)
-        chrome.tabs.sendMessage(
-          // Send a message to the content script
-          tab[0].id, { signature: request.data.signature, publicKey: request.data.publicKey }
-        );
-      });
-
+      chrome.tabs.query(
+        {
+          currentWindow: true,
+          active: true,
+          // Select active tab of the current window
+        },
+        function(tab) {
+          // console.log("TAB ID", tab[0].id)
+          chrome.tabs.sendMessage(
+            // Send a message to the content script
+            tab[0].id,
+            {
+              signature: request.data.signature,
+              publicKey: request.data.publicKey,
+            }
+          );
+        }
+      );
 
       sendResponse({ status: 'success', request });
     } catch (err) {
       sendResponse({ status: err.message, request });
     }
-  } else if (request.method == 'getextensionaddress') {
+  }
+
+  //get all extension addresses stored in localstorage
+  else if (request.method == 'getextensionaddress') {
     var values = allStorage();
     sendResponse({ values });
   }
-  // else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
-  //   console.log("LUNIE_SIGN_REQUEST_RESPONSELUNIE_SIGN_REQUEST_RESPONSELUNIE_SIGN_REQUEST_RESPONSELUNIE_SIGN_REQUEST_RESPONSE")
-  // }
+
+  //set signrequest and senderaddress to local storage
   else if (request.method == 'LUNIE_SIGN_REQUEST') {
-    let temp = request.data.payload.payload.signMessage;
-    temp = JSON.parse(temp);
-    q.add(temp);
-    latestSignReq = q.first();
-    console.log(request.data);
+    let temp = request.data.payload.payload.signMessage; //getting signMessage from request
+
+    temp = JSON.parse(temp); //parsing data because typeof of temp is string
+
+    q.add(temp); // adding sign request to queue
+
+    latestSignReq = q.first(); // getting latest sign request
+
+    //writing data to localstorage
     localStorage.setItem('latestSignReq', JSON.stringify(latestSignReq));
     localStorage.setItem(
       'senderAddress',
       JSON.stringify(request.data.payload.payload.senderAddress)
     );
-    // export var senderAddress = request.data.payload.payload.senderAddress;
-    sendResponse({ status: 'success', type: 'LUNIE_SIGN_REQUEST_Saad' });
-  } else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
-    console.log('Response,', request);
+
+    //sending successful response to Print.JS File
     sendResponse({
-      data: {
-        message: {
-          payload: {
-            signature: 'abcd',
-            publicKey: '1234',
-          },
-          type: 'LUNIE_SIGN_REQUEST_RESPONSE',
-        },
-        type: 'FROM_LUNIE_EXTENSION',
+      status: 'success',
+      type: {
+        senderAddress: request.data.payload.payload.senderAddress,
+        signMessage: temp,
       },
     });
+  }
+
+  //reject account and send response to wallet to reject a transaction
+  else if (request.method == 'rejectsignaccount') {
+    console.log('reject in background js');
+    chrome.tabs.query(
+      {
+        currentWindow: true,
+        active: true,
+        // Select active tab of the current window
+      },
+      function(tab) {
+        // console.log("TAB ID", tab[0].id)
+        chrome.tabs.sendMessage(
+          // Send a message to the content script
+          tab[0].id,
+          {
+            method: 'rejectsignaccount',
+            rejected: true,
+          }
+        );
+      }
+    );
   } else sendResponse({}); // snub them.
 });
 
+//this function returns all addresses stored in localstorage of extension
 function allStorage() {
   var values = [],
     keys = Object.keys(localStorage).map((type, key) => {
