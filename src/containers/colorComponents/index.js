@@ -3,6 +3,7 @@ import Home from './home/home.jsx';
 import SeeExistingAccounts from './seeExistingAccounts/seeExistingAccounts.jsx';
 import SignExtension from './signExtension/signExtension.jsx';
 import SubmitProposal from './submitProposal/submitProposal.jsx';
+import Delegate from './delegate/delegate.jsx';
 
 export default function Index(props) {
   function allStorage() {
@@ -58,7 +59,7 @@ export default function Index(props) {
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSubmitProposal' ? (
         <SubmitProposal />
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgDelegate' ? (
-        <div>delegate</div>
+        <Delegate />
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgUndelegate' ? (
         <div>Undelegate</div>
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgBeginRedelegate' ? (
