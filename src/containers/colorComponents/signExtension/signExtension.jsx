@@ -26,13 +26,10 @@ export default function SignExtension(props) {
     let addr = localStorage.getItem('senderAddress');
     console.log(password);
     try {
-      console.log(wallet);
-      wallet = getStoredWallet(
-        'colors1de8y373x7ng94yu98r34hcv7mamffl2hm5qg26',
-        '1234567890'
-      );
-      console.log(wallet);
-      console.log('privateeee keyyyy', Buffer.from(wallet.privateKey, hex));
+      console.log('-==========-SignMessage-==========-', signMessage);
+      wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
+      // console.log(wallet);
+      // console.log('privateeee keyyyy', Buffer.from(wallet.privateKey, hex));
       signature = signWithPrivateKey(
         signMessage,
         Buffer.from(wallet.privateKey, 'hex')
