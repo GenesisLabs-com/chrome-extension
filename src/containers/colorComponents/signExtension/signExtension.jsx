@@ -26,30 +26,34 @@ export default function SignExtension(props) {
     let addr = localStorage.getItem('senderAddress');
     console.log(password);
     try {
-      console.log('-==========-SignMessage-==========-', signMessage);
       wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
       // console.log(wallet);
       // console.log('privateeee keyyyy', Buffer.from(wallet.privateKey, hex));
+      console.log(JSON.stringify(signMessage), 'signmmm');
+      console.log(wallet.privateKey, 'pkey');
       signature = signWithPrivateKey(
-        signMessage,
+        JSON.stringify(signMessage),
         Buffer.from(wallet.privateKey, 'hex')
       );
-      console.log(signature.toString('hex'), '=-==-=-===-=-==-=-=-=-=-=-=-');
+      console.log(wallet.privateKey, '------private key---------');
+      console.log(signature, '=-==-=-===-=-Signature==-=-=-=-=-=-=-');
       chrome.runtime.sendMessage(
         {
           method: 'LUNIE_SIGN_REQUEST_RESPONSE',
           data: {
-            signature: signature.toString('base64'),
+            signature: signature.toString('hex'),
             publicKey: wallet.publicKey,
           },
         },
         function(response) {
           console.log(response);
-
+          localStorage.removeItem('latestSignReq');
+          localStorage.removeItem('senderAddress');
           goTo(TransactionSuccess);
         }
       );
     } catch (err) {
+      console.log(err);
       setPassword('');
       setError(true);
       setTimeout(() => setError(false), 3000);
@@ -74,10 +78,7 @@ export default function SignExtension(props) {
   const [password, setPassword] = React.useState('');
   function reject(e, address, password, signMessage) {
     // e.preventDefault();
-    console.log('signMessage', signMessage);
     let addr = localStorage.getItem('senderAddress');
-    console.log('address', addr.substr(1, addr.length - 2));
-    console.log('password', password);
     // const wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
     // // return signMessage => {
     // // const signature = signWithPrivateKey(
@@ -246,12 +247,12 @@ export default function SignExtension(props) {
                   latestSignReq.msgs[0].value.from_address,
                   password,
                   {
-                    chain_id: latestSignReq.chain_id,
                     account_number: latestSignReq.account_number,
-                    sequence: latestSignReq.sequence,
+                    chain_id: latestSignReq.chain_id,
                     fee: latestSignReq.fee,
-                    msgs: latestSignReq.msgs,
                     memo: latestSignReq.memo,
+                    msgs: latestSignReq.msgs,
+                    sequence: latestSignReq.sequence,
                   }
                 )
               }
