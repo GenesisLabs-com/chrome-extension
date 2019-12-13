@@ -130,7 +130,7 @@ export default function SignExtension(props) {
             <div className="tx__icon">
               <img src={color} alt="cosmic atom token" className="banking" />
             </div>
-            <div data-v-bc107f32="" className="tx__content">
+            <div className="tx__content">
               <div className="tx__content__left">
                 <div className="tx__content__caption">
                   <p>

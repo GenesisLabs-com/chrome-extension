@@ -27,12 +27,10 @@ export default function Index(props) {
 
   const [latestSignReq, setLatest] = React.useState(undefined);
   const [senderAddress, setSender] = React.useState(undefined);
-  const [submitProposal, setsubmitProposal] = React.useState(undefined);
 
   useEffect(() => {
     let temp = localStorage.getItem('latestSignReq');
     let tempS = localStorage.getItem('senderAddress');
-    let tempSubmit = localStorage.getItem('submitProposal');
     console.log(tempS);
     temp = JSON.parse(temp);
     if (temp !== null) {
@@ -41,25 +39,37 @@ export default function Index(props) {
     if (tempS !== null) {
       setSender(tempS);
     }
-    if (tempSubmit !== null) {
-      setsubmitProposal(tempSubmit);
-    }
   }, []);
   const usersExist = allStorage();
   console.log(latestSignReq, '==================================');
   return (
     <React.Fragment>
-      {latestSignReq !== undefined ? (
+      {latestSignReq === undefined ? (
+        usersExist.length !== 0 ? (
+          <SeeExistingAccounts logo={props.logo} />
+        ) : (
+          <Home logo={props.logo} />
+        )
+      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSend' ? (
         <SignExtension
           latestSignReq={latestSignReq}
           senderAddress={senderAddress}
         />
-      ) : submitProposal !== undefined ? (
+      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSubmitProposal' ? (
         <SubmitProposal />
-      ) : usersExist.length !== 0 ? (
-        <SeeExistingAccounts logo={props.logo} />
+      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgDelegate' ? (
+        <div>delegate</div>
+      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgUndelegate' ? (
+        <div>Undelegate</div>
+      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgBeginRedelegate' ? (
+        <div>Redelegate</div>
+      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgVote' ? (
+        <div>vote</div>
+      ) : latestSignReq.msgs[0].type ===
+        'cosmos-sdk/MsgWithdrawDelegationReward' ? (
+        <div>MsgWithdrawDelegationReward</div>
       ) : (
-        <Home logo={props.logo} />
+        <div>message not defined</div>
       )}
     </React.Fragment>
   );
