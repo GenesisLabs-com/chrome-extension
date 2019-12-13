@@ -10,7 +10,7 @@ const q = new Queue();
 //latestsignrequest is set to first element of Queue
 var latestSignReq = 'latestsignreq';
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //starting messages for extension communication
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           active: true,
           // Select active tab of the current window
         },
-        function(tab) {
+        function (tab) {
           // console.log("TAB ID", tab[0].id)
           chrome.tabs.sendMessage(
             // Send a message to the content script
@@ -101,14 +101,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
   //reject account and send response to wallet to reject a transaction
   else if (request.method == 'rejectsignaccount') {
-    console.log('reject in background js');
     chrome.tabs.query(
       {
         currentWindow: true,
         active: true,
         // Select active tab of the current window
       },
-      function(tab) {
+      function (tab) {
         // console.log("TAB ID", tab[0].id)
         chrome.tabs.sendMessage(
           // Send a message to the content script
