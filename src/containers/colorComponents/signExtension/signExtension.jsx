@@ -8,7 +8,6 @@ import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
 var latestSignReq = JSON.parse(localStorage.getItem('latestSignReq'));
-console.log(latestSignReq);
 export default function SignExtension(props) {
   let subtotal = parseFloat(props.latestSignReq.msgs[0].value.amount[0].amount);
   let networkfee = parseFloat(props.latestSignReq.fee.gas);
@@ -24,19 +23,12 @@ export default function SignExtension(props) {
     let wallet;
     let signature;
     let addr = localStorage.getItem('senderAddress');
-    console.log(password);
     try {
       wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
-      // console.log(wallet);
-      // console.log('privateeee keyyyy', Buffer.from(wallet.privateKey, hex));
-      console.log(JSON.stringify(signMessage), 'signmmm');
-      console.log(wallet.privateKey, 'pkey');
       signature = signWithPrivateKey(
         JSON.stringify(signMessage),
         Buffer.from(wallet.privateKey, 'hex')
       );
-      console.log(wallet.privateKey, '------private key---------');
-      console.log(signature, '=-==-=-===-=-Signature==-=-=-=-=-=-=-');
       chrome.runtime.sendMessage(
         {
           method: 'LUNIE_SIGN_REQUEST_RESPONSE',
