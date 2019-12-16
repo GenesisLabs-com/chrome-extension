@@ -4,6 +4,7 @@ let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
 console.log('vote', latestSignReq);
+
 export default function Vote() {
   return (
     <div>

@@ -5,6 +5,9 @@ import SignExtension from './signExtension/signExtension.jsx';
 import SubmitProposal from './submitProposal/submitProposal.jsx';
 import Delegate from './delegate/delegate.jsx';
 import Undelegate from './undelegate/undelegate.jsx';
+import Vote from './vote/vote.jsx';
+import WithDrawDelegationReward from './withdrawdelegationreward/withdrawdelegationreward.jsx';
+
 export default function Index(props) {
   function allStorage() {
     var values = [],
@@ -62,10 +65,10 @@ export default function Index(props) {
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgBeginRedelegate' ? (
         <div>Redelegate</div>
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgVote' ? (
-        <div>vote</div>
+        <Vote />
       ) : latestSignReq.msgs[0].type ===
         'cosmos-sdk/MsgWithdrawDelegationReward' ? (
-        <div>MsgWithdrawDelegationReward</div>
+        <WithDrawDelegationReward />
       ) : (
         <div>message not defined</div>
       )}
