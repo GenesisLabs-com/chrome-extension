@@ -2,24 +2,33 @@ import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { fullDecimals, viewDenom } from '../scripts/num';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
+import Home from '../createaddress/createaddress';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
-console.log('delegatee', latestSignReq);
 export default function Delegate() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
   const [copied, setCopied] = React.useState(false);
+  const [copiedTo, setToCopied] = React.useState(false);
+
+  let subtotal = parseFloat(latestSignReq.msgs[0].value.amount.amount);
+  let networkfee = parseFloat(latestSignReq.fee.gas);
+  subtotal = subtotal / 1000000;
+  networkfee = networkfee * 0.000000001;
+  let total = subtotal + networkfee;
 
   function approveDelegate(address, password, signMessage) {
     let wallet;
     let signature;
     let addr = latestSignReq.msgs[0].value.delegator_address;
+    console.log(addr);
     try {
-      wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
+      wallet = getStoredWallet(addr, password);
       signature = signWithPrivateKey(
         JSON.stringify(signMessage),
         Buffer.from(wallet.privateKey, 'hex')
@@ -68,17 +77,26 @@ export default function Delegate() {
   }
 
   function set() {
+    setToCopied(false);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
+  function setTo() {
+    setCopied(false);
+    setToCopied(true);
+    setTimeout(() => setToCopied(false), 2000);
+  }
+  // if (latestSignReq === null || latestSignReq === undefined) {
+  //   goTo(Home);
+  // }
   return (
     <div>
       <div className="session-approve">
         <h2>Approve Transaction</h2>
         <br />
         <div className="from">
-          From
+          From&nbsp;
           <div className="bech32-address">
             <div className="address">
               <CopyToClipboard
@@ -89,8 +107,8 @@ export default function Delegate() {
                   {latestSignReq.msgs[0].value.delegator_address.substr(0, 6) +
                     '...' +
                     latestSignReq.msgs[0].value.delegator_address.substr(
-                      latestSignReq.msgs[0].value.delegator_address - 4,
-                      latestSignReq.msgs[0].value.delegator_address - 1
+                      latestSignReq.msgs[0].value.delegator_address.length - 4,
+                      latestSignReq.msgs[0].value.delegator_address.length - 1
                     )}
                   {copied && (
                     <span style={{ color: 'green', fontSize: '10px' }}>
@@ -112,26 +130,20 @@ export default function Delegate() {
                 <img src={color} alt="cosmic atom token" className="staking" />
               </div>
               <div className="tx__content">
-                <div
-                  session-address="colors18mdxmk4cqdna47hu68g5snsz8zgrw357pn4xlm"
-                  className="tx__content__left"
-                >
+                <div className="tx__content__left">
                   <div className="tx__content__caption">
                     <p>
                       Delegated
-                      <b>1</b>
+                      <b>{fullDecimals(subtotal)}</b>
                       <span>&nbsp;CLR</span>
                     </p>
                   </div>
                   <div className="tx__content__information">
                     To&nbsp;
-                    <a
-                      href="#/staking/validators/colorsvaloper1s3jp9ta72eq0vazevrnjskjnw9sau2xhzcjllg"
-                      className=""
-                    >
+                    <a className="">
                       <CopyToClipboard
                         text={latestSignReq.msgs[0].value.validator_address}
-                        onCopy={() => set()}
+                        onCopy={() => setTo()}
                       >
                         <span>
                           {latestSignReq.msgs[0].value.validator_address.substr(
@@ -140,10 +152,12 @@ export default function Delegate() {
                           ) +
                             '...' +
                             latestSignReq.msgs[0].value.validator_address.substr(
-                              latestSignReq.msgs[0].value.validator_address - 4,
-                              latestSignReq.msgs[0].value.validator_address - 1
+                              latestSignReq.msgs[0].value.validator_address
+                                .length - 4,
+                              latestSignReq.msgs[0].value.validator_address
+                                .length - 1
                             )}
-                          {copied && (
+                          {copiedTo && (
                             <span style={{ color: 'green', fontSize: '10px' }}>
                               &nbsp;&#10004;&nbsp;Copied
                             </span>
@@ -159,15 +173,15 @@ export default function Delegate() {
               <ul className="table-invoice">
                 <li>
                   <span>Subtotal</span>
-                  <span> 1.000000 CLR </span>
+                  <span>{fullDecimals(subtotal)}&nbsp;CLR</span>
                 </li>
                 <li>
                   <span>Network Fee</span>
-                  <span>0.000121 CLR</span>
+                  <span>{fullDecimals(networkfee)}&nbsp;CLR</span>
                 </li>
                 <li className="total-row">
                   <span>Total</span>
-                  <span> 1.000121 CLR </span>
+                  <span>{fullDecimals(total)}&nbsp;CLR</span>
                 </li>
               </ul>
             </div>
@@ -199,7 +213,7 @@ export default function Delegate() {
                 id="approve-btn"
                 onClick={(e) =>
                   approveDelegate(
-                    latestSignReq.msgs[0].value.proposer,
+                    latestSignReq.msgs[0].value.delegator_address,
                     password,
                     {
                       account_number: latestSignReq.account_number,

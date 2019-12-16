@@ -52,10 +52,7 @@ export default function Index(props) {
           <Home logo={props.logo} />
         )
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSend' ? (
-        <SignExtension
-          latestSignReq={latestSignReq}
-          senderAddress={senderAddress}
-        />
+        <SignExtension />
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSubmitProposal' ? (
         <SubmitProposal />
       ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgDelegate' ? (

@@ -144,14 +144,11 @@ export default function SignExtension(props) {
                   <div className="bech32-address">
                     <div className="address">
                       <CopyToClipboard
-                        text={props.latestSignReq.msgs[0].value.to_address}
+                        text={latestSignReq.msgs[0].value.to_address}
                         onCopy={() => setTo()}
                       >
                         <span>
-                          {props.latestSignReq.msgs[0].value.to_address.substr(
-                            0,
-                            6
-                          ) +
+                          {latestSignReq.msgs[0].value.to_address.substr(0, 6) +
                             '...' +
                             props.latestSignReq.msgs[0].value.to_address.substr(
                               props.latestSignReq.msgs[0].value.to_address
