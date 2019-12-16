@@ -5,7 +5,7 @@ import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
 import { fullDecimals, viewDenom } from '../scripts/num';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
-import Home from '../createaddress/createaddress';
+// import Home from '../createaddress/createaddress';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
@@ -132,9 +132,12 @@ export default function Delegate() {
               </div>
               <div className="tx__content">
                 <div className="tx__content__left">
-                  <div className="tx__content__caption">
+                  <div
+                    className="tx__content__caption"
+                    style={{ color: 'black' }}
+                  >
                     <p>
-                      Delegated
+                      Delegated&nbsp;
                       <b>{fullDecimals(subtotal)}</b>
                       <span>&nbsp;CLR</span>
                     </p>

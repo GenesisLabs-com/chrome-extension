@@ -78,7 +78,7 @@ export default function Proposal() {
         <h2>Approve Transaction</h2>
         <br />
         <div className="from">
-          From
+          From&nbsp;
           <div className="bech32-address">
             <div className="address">
               <CopyToClipboard
@@ -89,8 +89,8 @@ export default function Proposal() {
                   {latestSignReq.msgs[0].value.proposer.substr(0, 6) +
                     '...' +
                     latestSignReq.msgs[0].value.proposer.substr(
-                      latestSignReq.msgs[0].value.proposer - 4,
-                      latestSignReq.msgs[0].value.proposer - 1
+                      latestSignReq.msgs[0].value.proposer.length - 4,
+                      latestSignReq.msgs[0].value.proposer.length - 1
                     )}
                   {copied && (
                     <span style={{ color: 'green', fontSize: '10px' }}>
@@ -122,16 +122,17 @@ export default function Proposal() {
                 >
                   <div className="tx_content_caption">
                     <p>
-                      Submitted text proposal
+                      &nbsp;Submitted text proposal&nbsp;
                       <b>
                         {latestSignReq.msgs[0].value.initial_deposit[0].amount /
                           1000000}
+                        &nbsp;
                       </b>
                       <span>CLR</span>
                     </p>
                   </div>
                   <div className="tx__content__information">
-                    Title:
+                    &nbsp;Title:&nbsp;
                     <i>{latestSignReq.msgs[0].value.title}</i>
                   </div>
                 </div>

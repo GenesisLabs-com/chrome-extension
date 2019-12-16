@@ -7,12 +7,13 @@ import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
-var latestSignReq = JSON.parse(localStorage.getItem('latestSignReq'));
+let latestSignReq = localStorage.getItem('latestSignReq');
+latestSignReq = JSON.parse(latestSignReq);
 
 console.log('signExtension', latestSignReq);
 export default function SignExtension(props) {
-  let subtotal = parseFloat(props.latestSignReq.msgs[0].value.amount[0].amount);
-  let networkfee = parseFloat(props.latestSignReq.fee.gas);
+  let subtotal = parseFloat(latestSignReq.msgs[0].value.amount[0].amount);
+  let networkfee = parseFloat(latestSignReq.fee.gas);
   subtotal = subtotal / 1000000;
   networkfee = networkfee * 0.000000001;
   let total = subtotal + networkfee;
@@ -152,11 +153,9 @@ export default function SignExtension(props) {
                         <span>
                           {latestSignReq.msgs[0].value.to_address.substr(0, 6) +
                             '...' +
-                            props.latestSignReq.msgs[0].value.to_address.substr(
-                              props.latestSignReq.msgs[0].value.to_address
-                                .length - 4,
-                              props.latestSignReq.msgs[0].value.to_address
-                                .length - 1
+                            latestSignReq.msgs[0].value.to_address.substr(
+                              latestSignReq.msgs[0].value.to_address.length - 4,
+                              latestSignReq.msgs[0].value.to_address.length - 1
                             )}
                         </span>
                       </CopyToClipboard>
@@ -219,12 +218,12 @@ export default function SignExtension(props) {
               id="reject-btn"
               onClick={(e) =>
                 reject(e, senderAddress, password, {
-                  chain_id: props.latestSignReq.chain_id,
-                  account_number: props.latestSignReq.account_number,
-                  sequence: props.latestSignReq.sequence,
-                  fee: props.latestSignReq.fee,
-                  msgs: props.latestSignReq.msgs,
-                  memo: props.latestSignReq.memo,
+                  chain_id: latestSignReq.chain_id,
+                  account_number: latestSignReq.account_number,
+                  sequence: latestSignReq.sequence,
+                  fee: latestSignReq.fee,
+                  msgs: latestSignReq.msgs,
+                  memo: latestSignReq.memo,
                 })
               }
             >

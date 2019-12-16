@@ -133,9 +133,12 @@ export default function UnDelegate() {
               </div>
               <div className="tx__content">
                 <div className="tx__content__left">
-                  <div className="tx__content__caption">
+                  <div
+                    className="tx__content__caption"
+                    style={{ color: 'black' }}
+                  >
                     <p>
-                      UnDelegate
+                      Undelegate&nbsp;
                       <b>{fullDecimals(subtotal)}</b>
                       <span>&nbsp;CLR</span>
                     </p>

@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 // import Greetings from '../../containers/Greetings/Greetings';
 import './Popup.css';
-import Index from '../../containers/colorComponents';
+const Index = lazy(() => import('../../containers/colorComponents'));
+// import Index from '../../containers/colorComponents';
 
 import { Router } from 'react-chrome-extension-router';
 class Popup extends Component {
   render() {
     return (
-      <Router>
-        <Index />
-      </Router>
+      <Suspense fallback={<div>Loadinggg</div>}>
+        <Router>
+          <Index />
+        </Router>
+      </Suspense>
     );
   }
 }

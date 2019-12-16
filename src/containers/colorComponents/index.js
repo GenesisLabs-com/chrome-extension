@@ -1,12 +1,28 @@
-import React, { useEffect } from 'react';
-import Home from './home/home.jsx';
-import SeeExistingAccounts from './seeExistingAccounts/seeExistingAccounts.jsx';
-import SignExtension from './signExtension/signExtension.jsx';
-import SubmitProposal from './submitProposal/submitProposal.jsx';
-import Delegate from './delegate/delegate.jsx';
-import Undelegate from './undelegate/undelegate.jsx';
-import Vote from './vote/vote.jsx';
-import WithDrawDelegationReward from './withdrawdelegationreward/withdrawdelegationreward.jsx';
+import React, { useEffect, Suspense, lazy } from 'react';
+const Home = lazy(() => import('./home/home'));
+// import Home from './home/home.jsx';
+const SeeExistingAccounts = lazy(() =>
+  import('./seeExistingAccounts/seeExistingAccounts')
+);
+// import SeeExistingAccounts from './seeExistingAccounts/seeExistingAccounts.jsx';
+const SignExtension = lazy(() => import('./signExtension/signExtension'));
+// import SignExtension from './signExtension/signExtension.jsx';
+const SubmitProposal = lazy(() =>
+  import('./submitProposal/submitProposal.jsx')
+);
+// import SubmitProposal from './submitProposal/submitProposal.jsx';
+const Delegate = lazy(() => import('./delegate/delegate'));
+// import Delegate from './delegate/delegate.jsx';
+const Undelegate = lazy(() => import('./undelegate/undelegate'));
+// import Undelegate from './undelegate/undelegate.jsx';
+const Vote = lazy(() => import('./vote/vote'));
+// import Vote from './vote/vote.jsx';
+const RedeleGate = lazy(() => import('./beginredelegate/beginredelegate'));
+// import RedeleGate from './beginredelegate/beginredelegate.jsx';
+const WithDrawDelegationReward = lazy(() =>
+  import('./withdrawdelegationreward/withdrawdelegationreward')
+);
+// import WithDrawDelegationReward from './withdrawdelegationreward/withdrawdelegationreward.jsx';
 
 export default function Index(props) {
   function allStorage() {
@@ -48,30 +64,32 @@ export default function Index(props) {
   console.log(latestSignReq, 'index');
   return (
     <React.Fragment>
-      {latestSignReq === undefined ? (
-        usersExist.length !== 0 ? (
-          <SeeExistingAccounts logo={props.logo} />
+      <Suspense fallback={<div>Loading....</div>}>
+        {latestSignReq === undefined ? (
+          usersExist.length !== 0 ? (
+            <SeeExistingAccounts logo={props.logo} />
+          ) : (
+            <Home logo={props.logo} />
+          )
+        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSend' ? (
+          <SignExtension senderAddress={senderAddress} />
+        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSubmitProposal' ? (
+          <SubmitProposal />
+        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgDelegate' ? (
+          <Delegate />
+        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgUndelegate' ? (
+          <Undelegate />
+        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgBeginRedelegate' ? (
+          <RedeleGate />
+        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgVote' ? (
+          <Vote />
+        ) : latestSignReq.msgs[0].type ===
+          'cosmos-sdk/MsgWithdrawDelegationReward' ? (
+          <WithDrawDelegationReward />
         ) : (
-          <Home logo={props.logo} />
-        )
-      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSend' ? (
-        <SignExtension />
-      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSubmitProposal' ? (
-        <SubmitProposal />
-      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgDelegate' ? (
-        <Delegate />
-      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgUndelegate' ? (
-        <Undelegate />
-      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgBeginRedelegate' ? (
-        <div>Redelegate</div>
-      ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgVote' ? (
-        <Vote />
-      ) : latestSignReq.msgs[0].type ===
-        'cosmos-sdk/MsgWithdrawDelegationReward' ? (
-        <WithDrawDelegationReward />
-      ) : (
-        <div>message not defined</div>
-      )}
+          <div>message not defined</div>
+        )}
+      </Suspense>
     </React.Fragment>
   );
 }
