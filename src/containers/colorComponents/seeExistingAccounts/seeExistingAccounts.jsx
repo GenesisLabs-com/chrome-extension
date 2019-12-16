@@ -6,6 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import colorplatform from '../../../assets/img/color-platform.svg';
 
+console.log('seexisting accounts');
 export default function SeeExistingAccounts() {
   function allStorage() {
     // chrome.runtime.sendMessage({ method: "getextensionaddress" }, function(

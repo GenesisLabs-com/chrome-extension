@@ -45,7 +45,7 @@ export default function Index(props) {
     }
   }, []);
   const usersExist = allStorage();
-  console.log(latestSignReq, '==================================');
+  console.log(latestSignReq, 'index');
   return (
     <React.Fragment>
       {latestSignReq === undefined ? (

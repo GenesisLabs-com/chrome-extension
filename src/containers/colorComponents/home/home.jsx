@@ -9,6 +9,7 @@ import SeeExsistingAccounts from '../seeExistingAccounts/seeExistingAccounts.jsx
 
 import colorplatform from '../../../assets/img/color-platform.svg';
 
+console.log('homee');
 export default function Home() {
   return (
     <div className="session-frame">

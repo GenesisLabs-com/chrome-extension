@@ -2,6 +2,8 @@ import React from 'react';
 import { goTo } from 'react-chrome-extension-router';
 
 import Home from '../home/home.jsx';
+
+console.log('ransaction success');
 export default function TransactionSuccess() {
   return (
     <div className="session-success">

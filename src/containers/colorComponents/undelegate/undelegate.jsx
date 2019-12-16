@@ -10,6 +10,7 @@ import Home from '../createaddress/createaddress';
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
+console.log('undelegate', latestSignReq);
 export default function UnDelegate() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');

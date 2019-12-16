@@ -7,7 +7,7 @@ import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
-console.log(latestSignReq);
+console.log('submitproposal', latestSignReq);
 export default function Proposal() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');

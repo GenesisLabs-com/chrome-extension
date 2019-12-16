@@ -10,6 +10,7 @@ import Home from '../createaddress/createaddress';
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
+console.log('Delegate', latestSignReq);
 export default function Delegate() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');

@@ -1,10 +1,14 @@
 import React from 'react';
+import { popToTop } from 'react-chrome-extension-router';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
 console.log('withdrawdelegationreward', latestSignReq);
 export default function Withdrawdelegationreward() {
+  if (latestSignReq === null || latestSignReq === undefined) {
+    return popToTop();
+  }
   return (
     <div>
       <div className="session-approve">

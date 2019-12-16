@@ -9,6 +9,7 @@ import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
 var latestSignReq = JSON.parse(localStorage.getItem('latestSignReq'));
 
+console.log('signExtension', latestSignReq);
 export default function SignExtension(props) {
   let subtotal = parseFloat(props.latestSignReq.msgs[0].value.amount[0].amount);
   let networkfee = parseFloat(props.latestSignReq.fee.gas);
