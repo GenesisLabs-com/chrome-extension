@@ -123,15 +123,20 @@ export default function Proposal() {
                   <div className="tx_content_caption">
                     <p>
                       &nbsp;Submitted text proposal&nbsp;
+                      <br />
                       <b>
                         {latestSignReq.msgs[0].value.initial_deposit[0].amount /
                           1000000}
                         &nbsp;
                       </b>
                       <span>CLR</span>
+                      <br />
                     </p>
                   </div>
-                  <div className="tx__content__information">
+                  <div
+                    className="tx__content__information"
+                    style={{ color: 'black' }}
+                  >
                     &nbsp;Title:&nbsp;
                     <i>{latestSignReq.msgs[0].value.title}</i>
                   </div>
