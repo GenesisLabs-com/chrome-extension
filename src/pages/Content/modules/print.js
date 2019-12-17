@@ -116,3 +116,5 @@ window.addEventListener('message', function (e) {
     );
   }
 });
+
+INIT_EXTENSION();
