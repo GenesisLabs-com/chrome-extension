@@ -152,19 +152,29 @@ export default function SignExtension(props) {
                   To&nbsp;
                   <div className="bech32-address">
                     <div className="address">
-                      <CopyToClipboard
-                        text={latestSignReq.msgs[0].value.to_address}
-                        onCopy={() => setTo()}
-                      >
-                        <span>
-                          {latestSignReq.msgs[0].value.to_address.substr(0, 6) +
-                            '...' +
-                            latestSignReq.msgs[0].value.to_address.substr(
-                              latestSignReq.msgs[0].value.to_address.length - 4,
-                              latestSignReq.msgs[0].value.to_address.length - 1
-                            )}
-                        </span>
-                      </CopyToClipboard>
+                      {latestSignReq.msgs[0].value.to_address ===
+                      latestSignReq.msgs[0].value.from_address ? (
+                        'yourself!'
+                      ) : (
+                        <CopyToClipboard
+                          text={latestSignReq.msgs[0].value.to_address}
+                          onCopy={() => setTo()}
+                        >
+                          <span>
+                            {latestSignReq.msgs[0].value.to_address.substr(
+                              0,
+                              6
+                            ) +
+                              '...' +
+                              latestSignReq.msgs[0].value.to_address.substr(
+                                latestSignReq.msgs[0].value.to_address.length -
+                                  4,
+                                latestSignReq.msgs[0].value.to_address.length -
+                                  1
+                              )}
+                          </span>
+                        </CopyToClipboard>
+                      )}
                     </div>
                     <div className="copied">
                       <i className="material-icons">check</i>
