@@ -103,16 +103,19 @@ export default function SignExtension(props) {
       <h2>Approve Transaction</h2>
       <br />
       <div className="from">
-        From
+        From&nbsp;
         <div className="bech32-address">
           <div className="address">
-            <CopyToClipboard text={props.senderAddress} onCopy={() => set()}>
+            <CopyToClipboard
+              text={latestSignReq.msgs[0].value.from_address}
+              onCopy={() => set()}
+            >
               <span>
-                {props.senderAddress.substr(0, 6) +
+                {latestSignReq.msgs[0].value.from_address.substr(0, 6) +
                   '...' +
-                  props.senderAddress.substr(
-                    props.senderAddress.length - 4,
-                    props.senderAddress.length - 1
+                  latestSignReq.msgs[0].value.from_address.substr(
+                    latestSignReq.msgs[0].value.from_address.length - 4,
+                    latestSignReq.msgs[0].value.from_address.length - 1
                   )}
                 {copied && (
                   <span style={{ color: 'green', fontSize: '10px' }}>
@@ -135,11 +138,14 @@ export default function SignExtension(props) {
             </div>
             <div className="tx__content">
               <div className="tx__content__left">
-                <div className="tx__content__caption">
+                <div
+                  className="tx__content__caption"
+                  style={{ color: 'black' }}
+                >
                   <p>
-                    Sent
-                    <b> 0.1</b>
-                    <span> CLR</span>
+                    Sent&nbsp;
+                    <b>{fullDecimals(subtotal)}&nbsp;</b>
+                    <span>CLR</span>
                   </p>
                 </div>
                 <div className="tx__content__information">

@@ -3,6 +3,10 @@ import { popToTop } from 'react-chrome-extension-router';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
 import color from '../../../assets/img/color.svg';
+
+import { goTo } from 'react-chrome-extension-router';
+import TransactionSuccess from '../transactionsuccess/transactionSuccess';
+
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
@@ -191,7 +195,7 @@ export default function Withdrawdelegationreward() {
                 id="approve-btn"
                 onClick={(e) =>
                   withdrawreward(
-                    latestSignReq.msgs[0].value.proposer,
+                    latestSignReq.msgs[0].value.delegator_address,
                     password,
                     {
                       account_number: latestSignReq.account_number,

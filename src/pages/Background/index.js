@@ -1,6 +1,7 @@
 import '../../assets/img/icon-34.png';
-import '../../assets/img/icon-128.png';
-
+// import '../../assets/img/icon-128.png';
+import coloricon from '../../assets/img/icon-128.png';
+import notification from '../../assets/img/Color_notification_icon.svg';
 import { storeWallet } from '@rnssolution/color-keys';
 import { Queue } from './queue';
 
@@ -10,7 +11,7 @@ const q = new Queue();
 //latestsignrequest is set to first element of Queue
 var latestSignReq = 'latestsignreq';
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //starting messages for extension communication
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
@@ -39,7 +40,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //send approve response to wallet
   else if (request.method == 'LUNIE_SIGN_REQUEST_RESPONSE') {
     try {
-      console.log('LUNIE_SIGN_REQUEST_RESPONSE', request);
+      // console.log('LUNIE_SIGN_REQUEST_RESPONSE', request);
 
       chrome.tabs.query(
         {
@@ -47,7 +48,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
           active: true,
           // Select active tab of the current window
         },
-        function (tab) {
+        function(tab) {
+          chrome.browserAction.setIcon({
+            path: coloricon,
+            tabId: tab[0].id,
+          });
           // console.log("TAB ID", tab[0].id)
           chrome.tabs.sendMessage(
             // Send a message to the content script
@@ -88,7 +93,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       'senderAddress',
       JSON.stringify(request.data.payload.payload.senderAddress)
     );
-
+    //change extension icon
+    chrome.browserAction.setIcon({
+      path: notification,
+      tabId: sender.tab.id,
+    });
     //sending successful response to Print.JS File
     sendResponse({
       status: 'success',
@@ -107,8 +116,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         active: true,
         // Select active tab of the current window
       },
-      function (tab) {
+      function(tab) {
         // console.log("TAB ID", tab[0].id)
+        chrome.browserAction.setIcon({
+          path: coloricon,
+          tabId: tab[0].id,
+        });
         chrome.tabs.sendMessage(
           // Send a message to the content script
           tab[0].id,

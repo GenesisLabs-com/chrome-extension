@@ -12,7 +12,21 @@ export default function TransactionSuccess() {
         <p>You successfully signed the transaction.</p>
       </div>
       <div className="session-footer">
-        <button onClick={() => goTo(Home)} className="">
+        <button
+          style={{
+            width: '100%',
+            borderRadius: '7px',
+            backgroundColor: '#0a73b1',
+            fontWeight: 400,
+            height: '20px',
+            color: 'white',
+            fontSize: '14px',
+            cursor: 'pointer',
+            transition: 'all 0.5s ease',
+          }}
+          onClick={() => goTo(Home)}
+          className=""
+        >
           View Accounts
         </button>
       </div>
