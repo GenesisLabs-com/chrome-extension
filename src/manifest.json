@@ -16,9 +16,9 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*",
-        "<all_urls>"
+        "https://localhost:9080/*",
+        "https://wallet.testnet.color-platform.rnssol.com/*",
+        "https://wallet.testnet.color-platform.org/*"
       ],
       "js": [
         "contentScript.bundle.js"
