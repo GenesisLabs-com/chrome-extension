@@ -66,8 +66,7 @@ export default function Index(props) {
   return (
     <React.Fragment>
       <Suspense fallback={<div>Loading....</div>}>
-        <SignedMessage />
-        {/* {latestSignReq === undefined ? (
+        {latestSignReq === undefined ? (
           usersExist.length !== 0 ? (
             <SeeExistingAccounts logo={props.logo} />
           ) : (
@@ -89,8 +88,8 @@ export default function Index(props) {
           'cosmos-sdk/MsgWithdrawDelegationReward' ? (
           <WithDrawDelegationReward />
         ) : (
-          <div>message not defined</div>
-        )} */}
+          <SignedMessage />
+        )}
       </Suspense>
     </React.Fragment>
   );
