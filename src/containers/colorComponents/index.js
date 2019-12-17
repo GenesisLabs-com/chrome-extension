@@ -72,20 +72,20 @@ export default function Index(props) {
           ) : (
             <Home logo={props.logo} />
           )
-        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSend' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgSend' ? (
           <SignExtension senderAddress={senderAddress} />
-        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgSubmitProposal' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgSubmitProposal' ? (
           <SubmitProposal />
-        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgDelegate' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgDelegate' ? (
           <Delegate />
-        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgUndelegate' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgUndelegate' ? (
           <Undelegate />
-        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgBeginRedelegate' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgBeginRedelegate' ? (
           <RedeleGate />
-        ) : latestSignReq.msgs[0].type === 'cosmos-sdk/MsgVote' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgVote' ? (
           <Vote />
         ) : latestSignReq.msgs[0].type ===
-          'cosmos-sdk/MsgWithdrawDelegationReward' ? (
+          'color/MsgWithdrawDelegationReward' ? (
           <WithDrawDelegationReward />
         ) : (
           <SignedMessage />
