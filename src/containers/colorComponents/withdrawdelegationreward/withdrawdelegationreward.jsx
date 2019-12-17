@@ -174,6 +174,8 @@ export default function Withdrawdelegationreward() {
                   placeholder="Password"
                   className="tm-field"
                   id="password"
+                  value={password}
+                  onChange={(e) => passWordChange(e)}
                 />
               </div>
               {error && (
