@@ -1,7 +1,7 @@
 import React from 'react';
 import { goTo } from 'react-chrome-extension-router';
 
-import Home from '../home/home.jsx';
+import SeeExistingAccounts from '../seeExistingAccounts/seeExistingAccounts';
 
 console.log('ransaction success');
 export default function TransactionSuccess() {
@@ -24,7 +24,7 @@ export default function TransactionSuccess() {
             cursor: 'pointer',
             transition: 'all 0.5s ease',
           }}
-          onClick={() => goTo(Home)}
+          onClick={() => goTo(SeeExistingAccounts)}
           className=""
         >
           View Accounts

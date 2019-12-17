@@ -13,9 +13,9 @@ latestSignReq = JSON.parse(latestSignReq);
 console.log('signExtension', latestSignReq);
 export default function SignExtension(props) {
   let subtotal = parseFloat(latestSignReq.msgs[0].value.amount[0].amount);
-  let networkfee = parseFloat(latestSignReq.fee.gas);
+  let networkfee = parseFloat(latestSignReq.fee.amount[0].amount);
   subtotal = subtotal / 1000000;
-  networkfee = networkfee * 0.000000001;
+  networkfee = networkfee / 1000000;
   let total = subtotal + networkfee;
 
   const [error, setError] = React.useState(false);

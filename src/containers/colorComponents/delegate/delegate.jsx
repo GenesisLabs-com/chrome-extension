@@ -18,9 +18,9 @@ export default function Delegate() {
   const [copiedTo, setToCopied] = React.useState(false);
 
   let subtotal = parseFloat(latestSignReq.msgs[0].value.amount.amount);
-  let networkfee = parseFloat(latestSignReq.fee.gas);
+  let networkfee = parseFloat(latestSignReq.fee.amount[0].amount);
   subtotal = subtotal / 1000000;
-  networkfee = networkfee * 0.000000001;
+  networkfee = networkfee / 1000000;
   let total = subtotal + networkfee;
 
   function approveDelegate(address, password, signMessage) {

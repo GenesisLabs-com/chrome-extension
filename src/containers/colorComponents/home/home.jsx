@@ -42,7 +42,7 @@ export default function Home() {
                   <div className="tm-li-session-title">
                     <span>Create a new address</span>
                   </div>
-                </div>{' '}
+                </div>
                 <div className="tm-li-session-icon">
                   <i className="material-icons">arrow_forward</i>
                 </div>
@@ -73,27 +73,27 @@ export default function Home() {
               >
                 <div className="tm-li-session-icon">
                   <i className="material-icons circle">person</i>
-                </div>{' '}
+                </div>
                 <div className="tm-li-session-text">
                   <div className="tm-li-session-title">
                     <span>See existing accounts</span>
                   </div>
-                </div>{' '}
+                </div>
                 <div className="tm-li-session-icon">
                   <i className="material-icons">arrow_forward</i>
                 </div>
               </Link>
             </div>
             <p className="footnote">
-              By using Color Wallet, you accept our
+              &nbsp;By using Color Wallet, you accept our
               <a
                 href="https://wallet.testnet.color-platform.org/#/terms"
                 target="_blank"
                 rel="nofollow noreferrer noopener"
               >
-                Terms of Service
+                &nbsp;Terms of Service&nbsp;
               </a>
-              and
+              and&nbsp;
               <a
                 href="https://wallet.testnet.color-platform.org/#/privacy"
                 target="_blank"
@@ -105,12 +105,8 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </div>{' '}
-      <button
-        data-v-21b3c012=""
-        className="button session-close"
-        color="secondary"
-      >
+      </div>
+      <button className="button session-close" color="secondary">
         Back to Color Wallet
       </button>
     </div>
