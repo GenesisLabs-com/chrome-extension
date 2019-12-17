@@ -23,6 +23,7 @@ const WithDrawDelegationReward = lazy(() =>
   import('./withdrawdelegationreward/withdrawdelegationreward')
 );
 // import WithDrawDelegationReward from './withdrawdelegationreward/withdrawdelegationreward.jsx';
+const SignedMessage = lazy(() => import('./signedMessage/signedMessage'));
 
 export default function Index(props) {
   function allStorage() {
@@ -65,7 +66,8 @@ export default function Index(props) {
   return (
     <React.Fragment>
       <Suspense fallback={<div>Loading....</div>}>
-        {latestSignReq === undefined ? (
+        <SignedMessage />
+        {/* {latestSignReq === undefined ? (
           usersExist.length !== 0 ? (
             <SeeExistingAccounts logo={props.logo} />
           ) : (
@@ -88,7 +90,7 @@ export default function Index(props) {
           <WithDrawDelegationReward />
         ) : (
           <div>message not defined</div>
-        )}
+        )} */}
       </Suspense>
     </React.Fragment>
   );

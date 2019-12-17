@@ -1,27 +1,24 @@
 import React from 'react';
+import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
-import color from '../../../assets/img/color.svg';
 import { goTo } from 'react-chrome-extension-router';
-import TransactionSuccess from '../transactionsuccess/transactionSuccess.jsx';
+import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
-console.log('vote', latestSignReq);
-
-export default function Vote() {
+export default function Proposal() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
   const [copied, setCopied] = React.useState(false);
 
-  function vote(address, password, signMessage) {
+  function approveProposal(address, password, signMessage) {
     let wallet;
     let signature;
-    let addr = latestSignReq.msgs[0].value.voter;
-    console.log(addr, 'aaadddrree');
+    let addr = localStorage.getItem('senderAddress');
     try {
-      wallet = getStoredWallet(addr, password);
+      wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
       signature = signWithPrivateKey(
         JSON.stringify(signMessage),
         Buffer.from(wallet.privateKey, 'hex')
@@ -74,6 +71,7 @@ export default function Vote() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
+
   return (
     <div>
       <div className="session-approve">
@@ -84,16 +82,18 @@ export default function Vote() {
           <div className="bech32-address">
             <div className="address">
               <CopyToClipboard
-                text={latestSignReq.msgs[0].value.voter}
+                // text={latestSignReq.msgs[0].value.proposer}
                 onCopy={() => set()}
               >
                 <span>
-                  {latestSignReq.msgs[0].value.voter.substr(0, 6) +
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                  {/* {latestSignReq.msgs[0].value.proposer.substr(0, 6) +
                     '...' +
-                    latestSignReq.msgs[0].value.voter.substr(
-                      latestSignReq.msgs[0].value.voter.length - 4,
-                      latestSignReq.msgs[0].value.voter.length - 1
-                    )}
+                    latestSignReq.msgs[0].value.proposer.substr(
+                      latestSignReq.msgs[0].value.proposer.length - 4,
+                      latestSignReq.msgs[0].value.proposer.length - 1
+                    )} */}
                   {copied && (
                     <span style={{ color: 'green', fontSize: '10px' }}>
                       &nbsp;&#10004;&nbsp;Copied
@@ -108,7 +108,7 @@ export default function Vote() {
           </div>
         </div>
         <div className="tm-form-group">
-          <div className="tm-form-group__field">
+          <div className="tm-form-group_field">
             <div className="tx">
               <div className="tx__icon">
                 <img
@@ -117,19 +117,27 @@ export default function Vote() {
                   className="governance"
                 />
               </div>
-              <div className="tx__content">
-                <div className="tx__content__left">
-                  <div
-                    className="tx__content__caption"
-                    style={{ color: 'black' }}
-                  >
-                    <p>Voted&nbsp;{latestSignReq.msgs[0].value.option}</p>
+              <div className="tx_content">
+                <div className="tx_content_left">
+                  <div className="tx_content_caption">
+                    <p>
+                      &nbsp;Signed Message&nbsp;
+                      {/* <b>
+                        {latestSignReq.msgs[0].value.initial_deposit[0].amount /
+                          1000000}
+                        &nbsp;
+                      </b>
+                      <span>CLR</span> */}
+                    </p>
                   </div>
                   <div className="tx__content__information">
-                    On&nbsp;
-                    <a className="">
-                      Proposal #{latestSignReq.msgs[0].value.proposal_id}
-                    </a>
+                    <i>
+                      orem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type and scrambled it to make a
+                      type specimen book
+                    </i>
                   </div>
                 </div>
               </div>
@@ -144,10 +152,15 @@ export default function Vote() {
                   placeholder="Password"
                   className="tm-field"
                   id="password"
-                  value={password}
                   onChange={(e) => passWordChange(e)}
+                  value={password}
                 />
               </div>
+              {error && (
+                <span style={{ color: 'red', fontSize: '14px' }}>
+                  Incorrect Password
+                </span>
+              )}
             </div>
             <div className="session-approve-footer">
               <button
@@ -161,14 +174,18 @@ export default function Vote() {
                 className="button right-button"
                 id="approve-btn"
                 onClick={(e) =>
-                  vote(latestSignReq.msgs[0].value.proposer, password, {
-                    account_number: latestSignReq.account_number,
-                    chain_id: latestSignReq.chain_id,
-                    fee: latestSignReq.fee,
-                    memo: latestSignReq.memo,
-                    msgs: latestSignReq.msgs,
-                    sequence: latestSignReq.sequence,
-                  })
+                  approveProposal(
+                    latestSignReq.msgs[0].value.proposer,
+                    password,
+                    {
+                      account_number: latestSignReq.account_number,
+                      chain_id: latestSignReq.chain_id,
+                      fee: latestSignReq.fee,
+                      memo: latestSignReq.memo,
+                      msgs: latestSignReq.msgs,
+                      sequence: latestSignReq.sequence,
+                    }
+                  )
                 }
               >
                 Approve
