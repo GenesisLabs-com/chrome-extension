@@ -4,7 +4,7 @@ import { goBack, goTo } from 'react-chrome-extension-router';
 
 import { getNewWalletFromSeed } from '@rnssolution/color-keys';
 import colorplatform from '../../../assets/img/color-platform.svg';
-console.log('recover with backup');
+
 export default function RecoverWithBackupUI() {
   const [values, setValues] = React.useState({
     accountname: '',
@@ -27,7 +27,7 @@ export default function RecoverWithBackupUI() {
           password: values.password,
         },
       },
-      function(response) {
+      function (response) {
         console.log(response);
         if (response.status === 'failed') {
           goTo(SeeExsistingAccounts);

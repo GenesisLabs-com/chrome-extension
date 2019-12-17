@@ -10,11 +10,8 @@ import {
 import SeeExsistingAccounts from '../seeExistingAccounts/seeExistingAccounts.jsx';
 
 import colorplatform from '../../../assets/img/color-platform.svg';
+
 //components
-
-//bip39
-// const bip39 = require("bip39");
-
 export default function Home() {
   const [values, setValues] = React.useState({
     accountname: '',
@@ -57,7 +54,7 @@ export default function Home() {
                   password: values.password,
                 },
               },
-              function(response) {
+              function (response) {
                 console.log(response);
                 if (response.status === 'failed') {
                   goTo(SeeExsistingAccounts);
@@ -92,10 +89,7 @@ export default function Home() {
     setCheckErr('');
   }
 
-  // function getWallet(e) {
-  //   e.preventDefault();
-  //   console.log(getStoredWallet());
-  // }
+
   return (
     <div className="session-frame">
       <a href="#/" className="router-link-active">

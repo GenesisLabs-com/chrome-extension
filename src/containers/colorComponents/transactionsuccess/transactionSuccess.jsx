@@ -3,7 +3,6 @@ import { Link } from 'react-chrome-extension-router';
 
 import SeeExistingAccounts from '../seeExistingAccounts/seeExistingAccounts';
 
-console.log('ransaction success');
 export default function TransactionSuccess() {
   return (
     <div className="session-success">

@@ -8,8 +8,6 @@ import TransactionSuccess from '../transactionsuccess/transactionSuccess.jsx';
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
-console.log('vote', latestSignReq);
-
 export default function Vote() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
@@ -19,7 +17,6 @@ export default function Vote() {
     let wallet;
     let signature;
     let addr = latestSignReq.msgs[0].value.voter;
-    console.log(addr, 'aaadddrree');
     try {
       wallet = getStoredWallet(addr, password);
       signature = signWithPrivateKey(
@@ -34,8 +31,7 @@ export default function Vote() {
             publicKey: wallet.publicKey,
           },
         },
-        function(response) {
-          console.log(response);
+        function (response) {
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
           goTo(TransactionSuccess);
@@ -58,7 +54,7 @@ export default function Vote() {
           rejected: true,
         },
       },
-      function(response) {}
+      function (response) { }
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');
@@ -148,6 +144,11 @@ export default function Vote() {
                   onChange={(e) => passWordChange(e)}
                 />
               </div>
+              {error && (
+                <span style={{ color: 'red', fontSize: '14px' }}>
+                  Incorrect Password
+                </span>
+              )}
             </div>
             <div className="session-approve-footer">
               <button
