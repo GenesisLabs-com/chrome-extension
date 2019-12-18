@@ -6,14 +6,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import colorplatform from '../../../assets/img/color-platform.svg';
 
-console.log('seexisting accounts');
 export default function SeeExistingAccounts() {
   function allStorage() {
-    // chrome.runtime.sendMessage({ method: "getextensionaddress" }, function(
-    //   response
-    // ) {
-    //   console.log("+++++++++", response.status);
-    // });
     var values = [],
       keys = Object.keys(localStorage).map((type, key) => {
         if (type.includes('cosmos-wallets-colors')) {
@@ -32,36 +26,11 @@ export default function SeeExistingAccounts() {
 
     return values;
   }
-  //   function indexStorage() {
-  //     var values = [],
-  //       keys = Object.keys(localStorage).map((type, key) => {
-  //         if (type.includes("cosmos-wallets-index")) {
-  //           return type;
-  //         } else {
-  //           return;
-  //         }
-  //       }),
-  //       i = keys.length;
-
-  //     while (i--) {
-  //       if (keys[i] !== undefined) {
-  //         values.push(localStorage.getItem(keys[i]));
-  //       }
-  //     }
-
-  //     return values;
-  //   }
 
   const [allData] = React.useState(allStorage());
 
   const [copied, setCopied] = React.useState();
-  //   const [indexData, setIndexData] = React.useState(indexStorage());
-  //   console.log(indexData);
-  // function sendDatatowebsite() {
-  //   console.log("sending data");
-  //   var data = { type: "FROM_PAGE", text: JSON.stringify(allData) };
-  //   window.postMessage(data, "*");
-  // }
+
   const handleCopied = (event, index) => {
     setCopied(index);
     setTimeout(() => setCopied(), 2000);
@@ -151,7 +120,6 @@ export default function SeeExistingAccounts() {
             <Link component={Home} className="back-link">
               Want to add another account?
             </Link>
-            {/* <button onClick={() => sendDatatowebsite()}>Send Data</button> */}
           </div>
         </div>
       </div>

@@ -8,6 +8,8 @@ import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
+let senderAddress = localStorage.getItem('senderAddress');
+
 export default function Proposal() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
@@ -31,7 +33,7 @@ export default function Proposal() {
             publicKey: wallet.publicKey,
           },
         },
-        function(response) {
+        function (response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -55,7 +57,7 @@ export default function Proposal() {
           rejected: true,
         },
       },
-      function(response) {}
+      function (response) { }
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');
@@ -82,18 +84,16 @@ export default function Proposal() {
           <div className="bech32-address">
             <div className="address">
               <CopyToClipboard
-                // text={latestSignReq.msgs[0].value.proposer}
+                text={senderAddress}
                 onCopy={() => set()}
               >
                 <span>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry.
-                  {/* {latestSignReq.msgs[0].value.proposer.substr(0, 6) +
+                  {senderAddress.substr(0, 6) +
                     '...' +
-                    latestSignReq.msgs[0].value.proposer.substr(
-                      latestSignReq.msgs[0].value.proposer.length - 4,
-                      latestSignReq.msgs[0].value.proposer.length - 1
-                    )} */}
+                    senderAddress.substr(
+                      senderAddress.length - 4,
+                      senderAddress.length - 1
+                    )}
                   {copied && (
                     <span style={{ color: 'green', fontSize: '10px' }}>
                       &nbsp;&#10004;&nbsp;Copied
@@ -132,11 +132,7 @@ export default function Proposal() {
                   </div>
                   <div className="tx__content__information">
                     <i>
-                      orem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book
+                      {latestSignReq.signMessage.message}
                     </i>
                   </div>
                 </div>

@@ -10,7 +10,6 @@ import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
-console.log('signExtension', latestSignReq);
 export default function SignExtension(props) {
   let subtotal = parseFloat(latestSignReq.msgs[0].value.amount[0].amount);
   let networkfee = parseFloat(latestSignReq.fee.amount[0].amount);
@@ -40,7 +39,7 @@ export default function SignExtension(props) {
             publicKey: wallet.publicKey,
           },
         },
-        function(response) {
+        function (response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -87,7 +86,7 @@ export default function SignExtension(props) {
           rejected: true,
         },
       },
-      function(response) {
+      function (response) {
         // localStorage.removeItem('latestSignReq');
         // localStorage.removeItem('senderAddress');
       }
@@ -153,28 +152,28 @@ export default function SignExtension(props) {
                   <div className="bech32-address">
                     <div className="address">
                       {latestSignReq.msgs[0].value.to_address ===
-                      latestSignReq.msgs[0].value.from_address ? (
-                        'yourself!'
-                      ) : (
-                        <CopyToClipboard
-                          text={latestSignReq.msgs[0].value.to_address}
-                          onCopy={() => setTo()}
-                        >
-                          <span>
-                            {latestSignReq.msgs[0].value.to_address.substr(
-                              0,
-                              6
-                            ) +
-                              '...' +
-                              latestSignReq.msgs[0].value.to_address.substr(
-                                latestSignReq.msgs[0].value.to_address.length -
+                        latestSignReq.msgs[0].value.from_address ? (
+                          'yourself!'
+                        ) : (
+                          <CopyToClipboard
+                            text={latestSignReq.msgs[0].value.to_address}
+                            onCopy={() => setTo()}
+                          >
+                            <span>
+                              {latestSignReq.msgs[0].value.to_address.substr(
+                                0,
+                                6
+                              ) +
+                                '...' +
+                                latestSignReq.msgs[0].value.to_address.substr(
+                                  latestSignReq.msgs[0].value.to_address.length -
                                   4,
-                                latestSignReq.msgs[0].value.to_address.length -
+                                  latestSignReq.msgs[0].value.to_address.length -
                                   1
-                              )}
-                          </span>
-                        </CopyToClipboard>
-                      )}
+                                )}
+                            </span>
+                          </CopyToClipboard>
+                        )}
                     </div>
                     <div className="copied">
                       <i className="material-icons">check</i>

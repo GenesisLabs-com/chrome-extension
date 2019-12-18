@@ -1,5 +1,4 @@
 import '../../assets/img/icon-34.png';
-// import '../../assets/img/icon-128.png';
 import coloricon from '../../assets/img/icon-128.png';
 import notification from '../../assets/img/Color_notification_icon.svg';
 import { storeWallet } from '@rnssolution/color-keys';
@@ -7,11 +6,10 @@ import { Queue } from './queue';
 
 //make new queue to get latest sign requests
 const q = new Queue();
-
 //latestsignrequest is set to first element of Queue
 var latestSignReq = 'latestsignreq';
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //starting messages for extension communication
   console.log(request, '==background==');
   if (request.method == 'getStatus') {
@@ -49,7 +47,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           active: true,
           // Select active tab of the current window
         },
-        function(tab) {
+        function (tab) {
           chrome.browserAction.setIcon({
             path: coloricon,
             tabId: tab[0].id,
@@ -81,13 +79,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //set signrequest and senderaddress to local storage
   else if (request.method == 'LUNIE_SIGN_REQUEST') {
     let temp = request.data.payload.payload.signMessage; //getting signMessage from request
-
     temp = JSON.parse(temp); //parsing data because typeof of temp is string
-
     q.add(temp); // adding sign request to queue
-
     latestSignReq = q.first(); // getting latest sign request
-
     //writing data to localstorage
     localStorage.setItem('latestSignReq', JSON.stringify(latestSignReq));
     localStorage.setItem(
@@ -117,7 +111,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         active: true,
         // Select active tab of the current window
       },
-      function(tab) {
+      function (tab) {
         // console.log("TAB ID", tab[0].id)
         chrome.browserAction.setIcon({
           path: coloricon,

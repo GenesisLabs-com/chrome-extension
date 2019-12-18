@@ -1,28 +1,19 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 const Home = lazy(() => import('./home/home'));
-// import Home from './home/home.jsx';
 const SeeExistingAccounts = lazy(() =>
   import('./seeExistingAccounts/seeExistingAccounts')
 );
-// import SeeExistingAccounts from './seeExistingAccounts/seeExistingAccounts.jsx';
 const SignExtension = lazy(() => import('./signExtension/signExtension'));
-// import SignExtension from './signExtension/signExtension.jsx';
 const SubmitProposal = lazy(() =>
   import('./submitProposal/submitProposal.jsx')
 );
-// import SubmitProposal from './submitProposal/submitProposal.jsx';
 const Delegate = lazy(() => import('./delegate/delegate'));
-// import Delegate from './delegate/delegate.jsx';
 const Undelegate = lazy(() => import('./undelegate/undelegate'));
-// import Undelegate from './undelegate/undelegate.jsx';
 const Vote = lazy(() => import('./vote/vote'));
-// import Vote from './vote/vote.jsx';
 const RedeleGate = lazy(() => import('./beginredelegate/beginredelegate'));
-// import RedeleGate from './beginredelegate/beginredelegate.jsx';
 const WithDrawDelegationReward = lazy(() =>
   import('./withdrawdelegationreward/withdrawdelegationreward')
 );
-// import WithDrawDelegationReward from './withdrawdelegationreward/withdrawdelegationreward.jsx';
 const SignedMessage = lazy(() => import('./signedMessage/signedMessage'));
 
 export default function Index(props) {
@@ -70,8 +61,8 @@ export default function Index(props) {
           usersExist.length !== 0 ? (
             <SeeExistingAccounts logo={props.logo} />
           ) : (
-            <Home logo={props.logo} />
-          )
+              <Home logo={props.logo} />
+            )
         ) : latestSignReq.msgs[0].type === 'color/MsgSend' ? (
           <SignExtension senderAddress={senderAddress} />
         ) : latestSignReq.msgs[0].type === 'color/MsgSubmitProposal' ? (
@@ -86,12 +77,19 @@ export default function Index(props) {
           <Vote />
         ) : latestSignReq.msgs[0].type ===
           'color/MsgWithdrawDelegationReward' ? (
+<<<<<<< HEAD
           <WithDrawDelegationReward />
         ) : latestSignReq.msgs[0].type === 'color/SignedMessage' ? (
           <SignedMessage />
         ) : (
           <div>Error</div>
         )}
+=======
+                          <WithDrawDelegationReward />
+                        ) : (
+                          <SignedMessage />
+                        )}
+>>>>>>> 220641088da5dbceec592378c0b9392fb586a97d
       </Suspense>
     </React.Fragment>
   );

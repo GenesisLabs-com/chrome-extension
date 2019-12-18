@@ -7,7 +7,6 @@ import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
-console.log('submitproposal', latestSignReq);
 export default function Proposal() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
@@ -31,7 +30,7 @@ export default function Proposal() {
             publicKey: wallet.publicKey,
           },
         },
-        function(response) {
+        function (response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -55,7 +54,7 @@ export default function Proposal() {
           rejected: true,
         },
       },
-      function(response) {}
+      function (response) { }
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');

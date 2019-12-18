@@ -2,7 +2,8 @@ var temp = 0;
 export const printLine = (line, arg2) => {
   console.log('===> FROM THE PRINT MODULE:', line, arg2);
 };
-chrome.runtime.onMessage.addListener(function(request, sender) {
+
+chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.method == 'rejectsignaccount') {
     var data = {
       message: {
@@ -25,29 +26,18 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
       type: 'FROM_LUNIE_EXTENSION',
     };
   }
-  // dataextension = [];
   window.postMessage(data, '*');
-  console.log('Done Signing');
 });
 
-function getData() {
-  chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function(
-    response
-  ) {
-    return JSON.stringify(response.values[0]);
-  });
-}
-
 function INIT_EXTENSION() {
-  //var e = o("INIT_EXTENSION", { extension_enabled: !0 });
-  var e = {
+  var init = {
     type: 'FROM_LUNIE_EXTENSION',
     message: { type: 'INIT_EXTENSION', payload: 'extension_enabled:!0' },
   };
-  window.postMessage(e, '*');
+  window.postMessage(init, '*');
 }
 
-window.addEventListener('message', function(e) {
+window.addEventListener('message', function (e) {
   if (temp == 0) {
     temp = temp + 1;
     INIT_EXTENSION();
@@ -61,9 +51,7 @@ window.addEventListener('message', function(e) {
     e.data.payload &&
     e.data.payload.type == 'GET_WALLETS'
   ) {
-    //listenerFunc()
-    // var dataextension;
-    chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function(
+    chrome.runtime.sendMessage({ method: 'getextensionaddress' }, function (
       response
     ) {
       var dataextension = [];
@@ -95,7 +83,7 @@ window.addEventListener('message', function(e) {
   ) {
     chrome.runtime.sendMessage(
       { method: 'LUNIE_SIGN_REQUEST', data: e.data },
-      function(response) {
+      function (response) {
         var data = [
           {
             payload: {

@@ -5,19 +5,16 @@ import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
 import { fullDecimals, viewDenom } from '../scripts/num';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
-import Home from '../createaddress/createaddress';
 
 let latestSignReq = localStorage.getItem('latestSignReq');
 latestSignReq = JSON.parse(latestSignReq);
 
-console.log('undelegate', latestSignReq);
 export default function UnDelegate() {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
   const [copied, setCopied] = React.useState(false);
   const [copiedTo, setToCopied] = React.useState(false);
 
-  console.log('undelegate', latestSignReq);
   let subtotal = parseFloat(latestSignReq.msgs[0].value.amount.amount);
   let networkfee = parseFloat(latestSignReq.fee.amount[0].amount);
   subtotal = subtotal / 1000000;
@@ -43,7 +40,7 @@ export default function UnDelegate() {
             publicKey: wallet.publicKey,
           },
         },
-        function(response) {
+        function (response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -66,7 +63,7 @@ export default function UnDelegate() {
           rejected: true,
         },
       },
-      function(response) {}
+      function (response) { }
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');
@@ -204,6 +201,11 @@ export default function UnDelegate() {
                   onChange={(e) => passWordChange(e)}
                 />
               </div>
+              {error && (
+                <span style={{ color: 'red', fontSize: '14px' }}>
+                  Incorrect Password
+                </span>
+              )}
             </div>
             <div className="session-approve-footer">
               <button
