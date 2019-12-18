@@ -61,8 +61,8 @@ export default function Index(props) {
           usersExist.length !== 0 ? (
             <SeeExistingAccounts logo={props.logo} />
           ) : (
-              <Home logo={props.logo} />
-            )
+            <Home logo={props.logo} />
+          )
         ) : latestSignReq.msgs[0].type === 'color/MsgSend' ? (
           <SignExtension senderAddress={senderAddress} />
         ) : latestSignReq.msgs[0].type === 'color/MsgSubmitProposal' ? (
@@ -77,19 +77,12 @@ export default function Index(props) {
           <Vote />
         ) : latestSignReq.msgs[0].type ===
           'color/MsgWithdrawDelegationReward' ? (
-<<<<<<< HEAD
           <WithDrawDelegationReward />
         ) : latestSignReq.msgs[0].type === 'color/SignedMessage' ? (
           <SignedMessage />
         ) : (
           <div>Error</div>
         )}
-=======
-                          <WithDrawDelegationReward />
-                        ) : (
-                          <SignedMessage />
-                        )}
->>>>>>> 220641088da5dbceec592378c0b9392fb586a97d
       </Suspense>
     </React.Fragment>
   );
