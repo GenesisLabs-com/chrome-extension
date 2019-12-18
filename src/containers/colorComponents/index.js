@@ -78,7 +78,7 @@ export default function Index(props) {
         ) : latestSignReq.msgs[0].type ===
           'color/MsgWithdrawDelegationReward' ? (
           <WithDrawDelegationReward />
-        ) : latestSignReq.msgs[0].type === 'color/SignedMessage' ? (
+        ) : latestSignReq.msgs[0].type === 'color/MsgSignMessage' ? (
           <SignedMessage />
         ) : (
           <div>Error</div>

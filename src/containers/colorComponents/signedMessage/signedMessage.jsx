@@ -22,18 +22,18 @@ export default function Proposal() {
     try {
       wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
       signature = signWithPrivateKey(
-        JSON.stringify(signMessage),
+        signMessage,
         Buffer.from(wallet.privateKey, 'hex')
       );
       chrome.runtime.sendMessage(
         {
           method: 'LUNIE_SIGN_REQUEST_RESPONSE',
           data: {
-            signature: signature.toString('hex'),
+            signature: signature,
             publicKey: wallet.publicKey,
           },
         },
-        function (response) {
+        function(response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -57,7 +57,7 @@ export default function Proposal() {
           rejected: true,
         },
       },
-      function (response) { }
+      function(response) {}
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');
@@ -83,10 +83,7 @@ export default function Proposal() {
           From&nbsp;
           <div className="bech32-address">
             <div className="address">
-              <CopyToClipboard
-                text={senderAddress}
-                onCopy={() => set()}
-              >
+              <CopyToClipboard text={senderAddress} onCopy={() => set()}>
                 <span>
                   {senderAddress.substr(0, 6) +
                     '...' +
@@ -131,9 +128,7 @@ export default function Proposal() {
                     </p>
                   </div>
                   <div className="tx__content__information">
-                    <i>
-                      {latestSignReq.signMessage.message}
-                    </i>
+                    <i>{latestSignReq.message}</i>
                   </div>
                 </div>
               </div>
@@ -171,16 +166,9 @@ export default function Proposal() {
                 id="approve-btn"
                 onClick={(e) =>
                   approveProposal(
-                    latestSignReq.msgs[0].value.proposer,
+                    senderAddress,
                     password,
-                    {
-                      account_number: latestSignReq.account_number,
-                      chain_id: latestSignReq.chain_id,
-                      fee: latestSignReq.fee,
-                      memo: latestSignReq.memo,
-                      msgs: latestSignReq.msgs,
-                      sequence: latestSignReq.sequence,
-                    }
+                    latestSignReq.message
                   )
                 }
               >
