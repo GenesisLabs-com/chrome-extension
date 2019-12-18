@@ -87,8 +87,10 @@ export default function Index(props) {
         ) : latestSignReq.msgs[0].type ===
           'color/MsgWithdrawDelegationReward' ? (
           <WithDrawDelegationReward />
-        ) : (
+        ) : latestSignReq.msgs[0].type === 'color/SignedMessage' ? (
           <SignedMessage />
+        ) : (
+          <div>Error</div>
         )}
       </Suspense>
     </React.Fragment>
