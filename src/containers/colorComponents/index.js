@@ -56,13 +56,13 @@ export default function Index(props) {
   console.log(latestSignReq, 'index');
   return (
     <React.Fragment>
-      <Suspense fallback={<div>Loading....</div>}>
+      <Suspense fallback={<div></div>}>
         {latestSignReq === undefined ? (
           usersExist.length !== 0 ? (
             <SeeExistingAccounts logo={props.logo} />
           ) : (
-              <Home logo={props.logo} />
-            )
+            <Home logo={props.logo} />
+          )
         ) : latestSignReq.msgs[0].type === 'color/MsgSend' ? (
           <SignExtension senderAddress={senderAddress} />
         ) : latestSignReq.msgs[0].type === 'color/MsgSubmitProposal' ? (
@@ -77,10 +77,12 @@ export default function Index(props) {
           <Vote />
         ) : latestSignReq.msgs[0].type ===
           'color/MsgWithdrawDelegationReward' ? (
-                          <WithDrawDelegationReward />
-                        ) : (
-                          <SignedMessage />
-                        )}
+          <WithDrawDelegationReward />
+        ) : latestSignReq.msgs[0].type === 'color/MsgSignMessage' ? (
+          <SignedMessage />
+        ) : (
+          <div>Error</div>
+        )}
       </Suspense>
     </React.Fragment>
   );

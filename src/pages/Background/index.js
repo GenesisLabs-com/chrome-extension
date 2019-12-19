@@ -11,6 +11,7 @@ var latestSignReq = 'latestsignreq';
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //starting messages for extension communication
+  console.log(request, '==background==');
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
       sendResponse({ status: localStorage });
