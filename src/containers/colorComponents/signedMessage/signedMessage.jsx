@@ -25,7 +25,7 @@ export default function Proposal() {
     try {
       wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
       signature = signWithPrivateKeywallet(
-        signMessage,
+        latestSignReq,
         Buffer.from(wallet.privateKey, 'hex')
       );
       chrome.runtime.sendMessage(

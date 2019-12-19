@@ -87,7 +87,7 @@ export default function SeeExistingAccounts() {
                         </div>
                       </div>
                       <a
-                        href="https://wallet.testnet.color-platform.org/#/extension"
+                        href="https://wallet.testnet.color-platform.rnssol.com/#/extension"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
