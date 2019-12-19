@@ -32,11 +32,11 @@ export default function Proposal() {
         {
           method: 'LUNIE_SIGN_REQUEST_RESPONSE',
           data: {
-            signature: signature,
+            signature: signature.toString("base64"),
             publicKey: wallet.publicKey,
           },
         },
-        function(response) {
+        function (response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -60,7 +60,7 @@ export default function Proposal() {
           rejected: true,
         },
       },
-      function(response) {}
+      function (response) { }
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');
