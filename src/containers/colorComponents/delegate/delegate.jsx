@@ -203,6 +203,11 @@ export default function Delegate() {
                   onChange={(e) => passWordChange(e)}
                 />
               </div>
+              {error && (
+                <span style={{ color: 'red', fontSize: '14px' }}>
+                  Incorrect Password
+                </span>
+              )}
             </div>
             <div className="session-approve-footer">
               <button
