@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "description": "A Color Browser chrome extension RNS wallet",
   "license": "RNS",
+  "author": "Saad Rasool <saad@rnssol.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/RNSSolution/chrome-extension.git"
@@ -15,7 +16,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.9.0",
-    "@rnssolution/color-keys": "2.0.2",
+    "@rnssolution/color-keys": "^2.0.3",
     "bignumber.js": "^9.0.0",
     "react": "^16.10.2",
     "react-chrome-extension-router": "0.0.15",
