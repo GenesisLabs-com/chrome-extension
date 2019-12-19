@@ -1,7 +1,10 @@
 import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import {
+  getStoredWallet,
+  signWithPrivateKeywallet,
+} from '@rnssolution/color-keys';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
@@ -21,7 +24,7 @@ export default function Proposal() {
     let addr = localStorage.getItem('senderAddress');
     try {
       wallet = getStoredWallet(addr.substr(1, addr.length - 2), password);
-      signature = signWithPrivateKey(
+      signature = signWithPrivateKeywallet(
         signMessage,
         Buffer.from(wallet.privateKey, 'hex')
       );
