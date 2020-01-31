@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.9.0",
-    "@rnssolution/color-keys": "^2.0.3",
+    "@colorplatform/color-keys": "^2.0.3",
     "bignumber.js": "^9.0.0",
     "react": "^16.10.2",
     "react-chrome-extension-router": "0.0.15",

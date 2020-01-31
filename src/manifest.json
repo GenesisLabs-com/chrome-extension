@@ -13,21 +13,19 @@
   "icons": {
     "128": "icon-128.png"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://localhost:9080/*",
-        "https://wallet.testnet.color-platform.rnssol.com/*",
-        "https://wallet.testnet.color-platform.org/*"
-      ],
-      "js": [
-        "contentScript.bundle.js"
-      ],
-      "css": [
-        "content.styles.css"
-      ]
-    }
-  ],
+  "content_scripts": [{
+    "matches": [
+      "https://localhost:9080/*",
+      "https://wallet.testnet.color-platform.rnssol.com/*",
+      "https://wallet.mainbeta-2.color-platform.org/*"
+    ],
+    "js": [
+      "contentScript.bundle.js"
+    ],
+    "css": [
+      "content.styles.css"
+    ]
+  }],
   "web_accessible_resources": [
     "content.styles.css",
     "icon-128.png",

@@ -3,7 +3,7 @@ import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { fullDecimals, viewDenom } from '../scripts/num';
-import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { getStoredWallet, signWithPrivateKey } from '@colorplatform/color-keys';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
@@ -39,7 +39,7 @@ export default function SignExtension(props) {
             publicKey: wallet.publicKey,
           },
         },
-        function (response) {
+        function(response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -86,7 +86,7 @@ export default function SignExtension(props) {
           rejected: true,
         },
       },
-      function (response) {
+      function(response) {
         // localStorage.removeItem('latestSignReq');
         // localStorage.removeItem('senderAddress');
       }
@@ -152,28 +152,28 @@ export default function SignExtension(props) {
                   <div className="bech32-address">
                     <div className="address">
                       {latestSignReq.msgs[0].value.to_address ===
-                        latestSignReq.msgs[0].value.from_address ? (
-                          'yourself!'
-                        ) : (
-                          <CopyToClipboard
-                            text={latestSignReq.msgs[0].value.to_address}
-                            onCopy={() => setTo()}
-                          >
-                            <span>
-                              {latestSignReq.msgs[0].value.to_address.substr(
-                                0,
-                                6
-                              ) +
-                                '...' +
-                                latestSignReq.msgs[0].value.to_address.substr(
-                                  latestSignReq.msgs[0].value.to_address.length -
+                      latestSignReq.msgs[0].value.from_address ? (
+                        'yourself!'
+                      ) : (
+                        <CopyToClipboard
+                          text={latestSignReq.msgs[0].value.to_address}
+                          onCopy={() => setTo()}
+                        >
+                          <span>
+                            {latestSignReq.msgs[0].value.to_address.substr(
+                              0,
+                              6
+                            ) +
+                              '...' +
+                              latestSignReq.msgs[0].value.to_address.substr(
+                                latestSignReq.msgs[0].value.to_address.length -
                                   4,
-                                  latestSignReq.msgs[0].value.to_address.length -
+                                latestSignReq.msgs[0].value.to_address.length -
                                   1
-                                )}
-                            </span>
-                          </CopyToClipboard>
-                        )}
+                              )}
+                          </span>
+                        </CopyToClipboard>
+                      )}
                     </div>
                     <div className="copied">
                       <i className="material-icons">check</i>

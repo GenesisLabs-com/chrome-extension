@@ -1,8 +1,12 @@
 import '../../assets/img/icon-34.png';
 import coloricon from '../../assets/img/icon-128.png';
 import notification from '../../assets/img/Color_notification_icon.svg';
-import { storeWallet } from '@rnssolution/color-keys';
-import { Queue } from './queue';
+import {
+  storeWallet
+} from '@colorplatform/color-keys';
+import {
+  Queue
+} from './queue';
 
 //make new queue to get latest sign requests
 const q = new Queue();
@@ -14,11 +18,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log(request, '==background==');
   if (request.method == 'getStatus') {
     if (sender.url === 'http://localhost:3000/') {
-      sendResponse({ status: localStorage });
+      sendResponse({
+        status: localStorage
+      });
     } else if (request.method == 'webmessage') {
-      sendResponse({ status: 'message recieved' });
+      sendResponse({
+        status: 'message recieved'
+      });
     } else {
-      sendResponse({ status: 'No Data for you Bro' });
+      sendResponse({
+        status: 'No Data for you Bro'
+      });
     }
   }
 
@@ -30,9 +40,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         request.data.accountname,
         request.data.password
       );
-      sendResponse({ status: 'success', request });
+      sendResponse({
+        status: 'success',
+        request
+      });
     } catch (err) {
-      sendResponse({ status: err.message, request });
+      sendResponse({
+        status: err.message,
+        request
+      });
     }
   }
 
@@ -41,8 +57,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     try {
       // console.log('LUNIE_SIGN_REQUEST_RESPONSE', request);
 
-      chrome.tabs.query(
-        {
+      chrome.tabs.query({
           currentWindow: true,
           active: true,
           // Select active tab of the current window
@@ -55,8 +70,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
           // console.log("TAB ID", tab[0].id)
           chrome.tabs.sendMessage(
             // Send a message to the content script
-            tab[0].id,
-            {
+            tab[0].id, {
               signature: request.data.signature,
               publicKey: request.data.publicKey,
             }
@@ -64,16 +78,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
       );
 
-      sendResponse({ status: 'success', request });
+      sendResponse({
+        status: 'success',
+        request
+      });
     } catch (err) {
-      sendResponse({ status: err.message, request });
+      sendResponse({
+        status: err.message,
+        request
+      });
     }
   }
 
   //get all extension addresses stored in localstorage
   else if (request.method == 'getextensionaddress') {
     var values = allStorage();
-    sendResponse({ values });
+    sendResponse({
+      values
+    });
   }
 
   //set signrequest and senderaddress to local storage
@@ -105,8 +127,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   //reject account and send response to wallet to reject a transaction
   else if (request.method == 'rejectsignaccount') {
-    chrome.tabs.query(
-      {
+    chrome.tabs.query({
         currentWindow: true,
         active: true,
         // Select active tab of the current window
@@ -119,8 +140,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         });
         chrome.tabs.sendMessage(
           // Send a message to the content script
-          tab[0].id,
-          {
+          tab[0].id, {
             method: 'rejectsignaccount',
             rejected: true,
           }

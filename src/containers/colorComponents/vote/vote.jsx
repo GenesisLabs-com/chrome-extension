@@ -1,6 +1,6 @@
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { getStoredWallet, signWithPrivateKey } from '@colorplatform/color-keys';
 import color from '../../../assets/img/color.svg';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess.jsx';
@@ -31,7 +31,7 @@ export default function Vote() {
             publicKey: wallet.publicKey,
           },
         },
-        function (response) {
+        function(response) {
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
           goTo(TransactionSuccess);
@@ -54,7 +54,7 @@ export default function Vote() {
           rejected: true,
         },
       },
-      function (response) { }
+      function(response) {}
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');

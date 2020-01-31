@@ -5,7 +5,7 @@ import {
   getSeed,
   getNewWalletFromSeed,
   getStoredWallet,
-} from '@rnssolution/color-keys';
+} from '@colorplatform/color-keys';
 
 import SeeExsistingAccounts from '../seeExistingAccounts/seeExistingAccounts.jsx';
 
@@ -54,7 +54,7 @@ export default function Home() {
                   password: values.password,
                 },
               },
-              function (response) {
+              function(response) {
                 console.log(response);
                 if (response.status === 'failed') {
                   goTo(SeeExsistingAccounts);
@@ -88,7 +88,6 @@ export default function Home() {
     setCheck(!check);
     setCheckErr('');
   }
-
 
   return (
     <div className="session-frame">

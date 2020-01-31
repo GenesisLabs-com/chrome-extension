@@ -1,7 +1,7 @@
 import React from 'react';
 import { popToTop } from 'react-chrome-extension-router';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { getStoredWallet, signWithPrivateKey } from '@colorplatform/color-keys';
 import color from '../../../assets/img/color.svg';
 
 import { goTo } from 'react-chrome-extension-router';

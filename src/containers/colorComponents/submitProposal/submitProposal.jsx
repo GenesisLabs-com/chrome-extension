@@ -1,7 +1,7 @@
 import React from 'react';
 import color from '../../../assets/img/color.svg';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { getStoredWallet, signWithPrivateKey } from '@colorplatform/color-keys';
 import { goTo } from 'react-chrome-extension-router';
 import TransactionSuccess from '../transactionsuccess/transactionSuccess';
 
@@ -30,7 +30,7 @@ export default function Proposal() {
             publicKey: wallet.publicKey,
           },
         },
-        function (response) {
+        function(response) {
           console.log(response);
           localStorage.removeItem('latestSignReq');
           localStorage.removeItem('senderAddress');
@@ -54,7 +54,7 @@ export default function Proposal() {
           rejected: true,
         },
       },
-      function (response) { }
+      function(response) {}
     );
     localStorage.removeItem('latestSignReq');
     localStorage.removeItem('senderAddress');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getStoredWallet, signWithPrivateKey } from '@rnssolution/color-keys';
+import { getStoredWallet, signWithPrivateKey } from '@colorplatform/color-keys';
 import color from '../../../assets/img/color.svg';
 import { fullDecimals, viewDenom } from '../scripts/num';
 import { goTo } from 'react-chrome-extension-router';

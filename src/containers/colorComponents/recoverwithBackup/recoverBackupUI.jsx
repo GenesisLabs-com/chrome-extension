@@ -2,7 +2,7 @@
 import React from 'react';
 import { goBack, goTo } from 'react-chrome-extension-router';
 
-import { getNewWalletFromSeed } from '@rnssolution/color-keys';
+import { getNewWalletFromSeed } from '@colorplatform/color-keys';
 import colorplatform from '../../../assets/img/color-platform.svg';
 
 export default function RecoverWithBackupUI() {
@@ -14,8 +14,12 @@ export default function RecoverWithBackupUI() {
   });
 
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+    setValues({
+      ...values,
+      [name]: event.target.value,
+    });
   };
+
   function recover() {
     const wallet = getNewWalletFromSeed(values.seed);
     chrome.runtime.sendMessage(
@@ -27,7 +31,7 @@ export default function RecoverWithBackupUI() {
           password: values.password,
         },
       },
-      function (response) {
+      function(response) {
         console.log(response);
         if (response.status === 'failed') {
           goTo(SeeExsistingAccounts);
@@ -52,11 +56,11 @@ export default function RecoverWithBackupUI() {
               boxShadow: 'none',
             }}
           >
-            <i className="material-icons session-back">arrow_back</i>
+            <i className="material-icons session-back"> arrow_back </i>
           </button>
           <form className="form">
             <main className="form-main">
-              <h2 className="session-title">Recover with backup code</h2>
+              <h2 className="session-title"> Recover with backup code </h2>
               <div className="session-main">
                 <div className="tm-form-group">
                   <label htmlFor="import-name" className="tm-form-group__label">
@@ -68,7 +72,6 @@ export default function RecoverWithBackupUI() {
                       placeholder="Must have at least 5 characters"
                       className="tm-field"
                       id="import-name"
-                      vue-focus="vue-focus"
                       onChange={handleChange('accountname')}
                     />
                   </div>
